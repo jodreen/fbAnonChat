@@ -24,14 +24,12 @@ exports.index = function(req, res) {
 
 exports.loginCallback = function(req, res, next) {
     var code = req.query.code;
-
     if (req.query.error) {
         // user might have disallowed the app
         return res.send('login-error ' + req.query.error_description);
     } else if (!code) {
         return res.redirect('/');
     }
-
     Step(
         function exchangeCodeForAccessToken() {
             FB.napi('oauth/access_token', {
