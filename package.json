@@ -1,15 +1,13 @@
 {
-    "name": "testapp",
-    "version": "0.0.1",
-    "dependencies": {
-        "connect-flash": "latest",
-        "connect-cachify": "*",
-        "express": "~3.2.3",
-        "ejs": "~0.8.4",
-        "nconf": "~0.6.7",
-        "view-helpers": "latest",
-        "winston": "~0.7.1",
-        "winston-request-logger": "latest",
-        "fb": "0.7.0"
-    }
+  "name": "scrumptious",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app"
+  },
+  "dependencies": {
+    "express": "3.1.0",
+    "ejs": "*",
+    "step": "0.0.5"
+  }
 }
