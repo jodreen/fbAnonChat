@@ -2,7 +2,11 @@ var express = require('express'),
     http = require('http'),
     fs = require('fs'),
     path = require('path'),
-    winston = require('winston');
+    winston = require('winston'),
+    FB = require('fb'),
+    config = require('./config'),
+    api = require('./routes/api'),
+    home = require('./routes/home');
 
 if (!process.env.NODE_ENV) {
     process.env.NODE_ENV = 'local';
