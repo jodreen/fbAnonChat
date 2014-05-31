@@ -1,0 +1,17 @@
+<% if (tmplate === 'jade') { %>extends layout
+
+block content
+  p Welcome to User
+<% } %><% if (tmplate === 'ejs') { %><!DOCTYPE html>
+<html>
+  <head>
+    <title><%%= title %></title>
+    <%%- cachify_css('/stylesheets/style.css') %>
+  </head>
+  <body>
+    <p>Welcome to User</p>
+    <%%- cachify_js('/js/main.min.js') %>
+  </body>
+</html>
+<% } %><% if (tmplate === 'jshtml') { %><p>Welcome to User</p>
+<% } %>

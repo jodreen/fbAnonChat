@@ -1,0 +1,17 @@
+<% if (tmplate === 'jade') { %>doctype 5
+html(lang='en')
+  head
+    title= title
+    meta(charset='utf-8')
+    | !{cachify_css('/css/style.min.css')}
+    block styles
+  body
+    block content
+    block footer
+      footer.page-footer
+        p &copy; Company 2013
+    | !{cachify_js('/js/main.min.js')}
+    block scripts
+<% } %><% if (tmplate === 'ejs') { %>
+
+<% } %>

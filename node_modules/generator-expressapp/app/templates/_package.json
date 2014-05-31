@@ -1,0 +1,18 @@
+{
+  "name": "<%= _.slugify(appname) %>",
+  "version": "0.0.1",
+  "dependencies": {
+    "connect-flash": "latest"<% if (tmplate !== 'jshtml') { %>
+    , "connect-cachify": "*"<% } %>
+    , "express": "~3.2.3"<% if (tmplate === 'ejs') { %>
+    , "ejs":"~0.8.4"<% } %><% if (tmplate === 'jade') { %>
+    , "jade": "~0.30.0"<% } %><% if (tmplate === 'jshtml') { %>
+    , "jshtml-express":"latest"<% } %><% if (css === 'less') { %>
+    , "less-middleware": "~0.1.11"<% } %><% if (css === 'stylus') { %>
+    , "stylus": "~0.32.1"<% } %>
+    , "nconf": "~0.6.7"
+    , "view-helpers": "latest"
+    , "winston": "~0.7.1"
+    , "winston-request-logger": "latest"
+  }
+}
