@@ -41,9 +41,8 @@
 <div data-role="page" id="menu" class="type-menu">
     <div data-role="header">
         <div class="ui-bar ui-bar-a">
-
-            <span class="topnav-app">Scrumptious</span>
-
+<!--  -->
+            <span class="topnav-app">Facebook Anonymous Chat</span>
             <span id="user-identity"></span>
             <!-- menu trigger -->
             <a data-icon="arrow-d" data-iconpos="notext" href="#menu" data-rel="popup" data-position-to="#menu-anchor" data-transition="slidedown" data-inline="true" class="ui-btn-right">Menu</a>
@@ -62,38 +61,12 @@
 
         <div id="confirmation"></div>
         <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
-            <li><a href="#meals"><img src="images/action-eating.png" /> <h3>What are you eating?</h3><p id="select-meal">Select one</p></a></li>
             <li><a href="#places" onclick="getNearby()"><img src="images/action-location.png" /> <h3>Where are you?</h3><p id="select-location">Select one</p></a></li>
             <li><a href="#friends" onclick="getFriends()"><img src="images/action-people.png" /> <h3>With whom?</h3><p id="select-friends">Select friends</p></a></li>
         </ul>
     </div>
     <div class="submit-button">
         <a id="announce" href="#" data-role="button" class="ui-disabled">Announce</a>
-    </div>
-</div>
-<!-- Select a Meal page -->
-<div data-role="page" id="meals" class="type-menu-drilldown">
-    <div data-role="header">
-        <a data-rel="back" data-icon="back">Back</a>
-        <h1>Select a Meal</h1>
-    </div>
-
-    <div data-role="content">
-        <ul data-role="listview" data-inset="false" data-theme="c" id="meal-list"></ul>
-    </div>
-</div>
-<!-- Details for a meal page -->
-<div data-role="page" id="meal-details" class="type-meal-details">
-    <div data-role="header">
-        <a data-rel="back" data-icon="back">Back</a>
-        <h1>Meal</h1>
-    </div>
-
-    <div data-role="content">
-        <div id="selected_meal"></div>
-        <div class="submit-button">
-            <a id="detail-meal-select" href="#menu" data-role="button">Select</a>
-        </div>
     </div>
 </div>
 <!-- Select a Place page -->
