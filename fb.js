@@ -1,7 +1,5 @@
 (function() {
-
     var FB = (function() {
-
         var request = require('request'),
             crypto = require('crypto'),
             version = require(require('path').resolve(__dirname, 'package.json')).version,

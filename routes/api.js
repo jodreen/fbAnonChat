@@ -1,5 +1,4 @@
 var FB = require('../fb'),
-
     config = require('../config');
 
 exports.search = function(req, res) {
@@ -41,7 +40,6 @@ exports.announce = function(req, res) {
             }
             return res.send(500, result);
         }
-
         res.send(result);
     });
 };

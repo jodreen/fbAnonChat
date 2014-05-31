@@ -2,9 +2,7 @@ var express = require('express'),
     FB = require('fb'),
     http = require('http'),
     path = require('path'),
-
     config = require('./config'),
-
     api = require('./routes/api'),
     home = require('./routes/home'),
     meals = require('./routes/meals');

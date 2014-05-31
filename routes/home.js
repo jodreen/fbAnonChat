@@ -1,6 +1,5 @@
 var FB = require('../fb'),
     Step = require('step'),
-
     config = require('../config');
 
 FB.options({

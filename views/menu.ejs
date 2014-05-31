@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <meta property="og:title" content="Scrumptious" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://scrumpit.herokuapp.com" />
@@ -11,7 +10,6 @@
     <meta property="og:site_name" content="Scrumptious" />
     <meta property="og:description" content="Scrumptious app" />
     <meta property="fb:app_id" content="314522715291696" />
-
     <title>Scrumptious</title>
     <link rel="stylesheet"  href="css/jquery.mobile-1.2.0.css" />
     <link rel="stylesheet"  href="css/base.css" />
@@ -20,12 +18,10 @@
     <script src="js/jquery.mobile-1.2.0.js"></script>
     <script src="js/mustache.js"></script>
     <script src="js/main.js"></script>
-
 </head>
 <body>
 <!-- Facebook JavaScript -->
 <div id="fb-root"></div>
-
 
 <!-- Login page -->
 <div data-role="page" id="login" class="type-home">
@@ -125,7 +121,6 @@
     </div>
 </div>
 
-
 <script type="x-mustache-template" id="meal_list_tmpl">
     {{#.}}
     <li><a href="#meal-details" data-name="{{ title }}" data-transition="slide"><img src="images/meals/{{ id }}.png"></img>{{ title }}</a></li>
@@ -150,8 +145,5 @@
     <li data-icon="false" data-name="{{ id }}"><a href="#" data-transition="slide"><img src="{{ picture.data.url }}"></img>{{ name }}</a></li>
     {{/.}}
 </script>
-
-
-
 </body>
-        </html>
+</html>
