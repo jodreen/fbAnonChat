@@ -542,3 +542,7 @@ dl dd ul li { border: none; }
     -webkit-background-size: 776px 18px;
     background-size: 776px 18px;
 }
+
+#hidden_friends{
+	visibility: hidden;
+}
