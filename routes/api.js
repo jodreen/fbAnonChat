@@ -16,8 +16,10 @@ exports.friends = function(req, res) {
     FB.api('me/friends', {
         fields: 'gender,picture,about',
         limit: 500,
+
         access_token: req.session.access_token
-    }, function(result) {
+    },
+    function(result) {
         if (!result || result.error) {
             return res.send(500, 'error');
         }
