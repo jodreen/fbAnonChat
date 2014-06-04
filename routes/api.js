@@ -25,6 +25,10 @@ exports.friends = function(req, res) {
     });
 };
 
+exports.chat = function(req, res) {
+    res.render('chat.ejs');
+};
+
 exports.announce = function(req, res) {
     var parameters = req.body;
     parameters.access_token = req.session.access_token;
