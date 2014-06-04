@@ -72,13 +72,13 @@
     </div>
 
     <div data-role="content">
-        <ul data-role="listview" data-inset="false" data-theme="c" data-filter="true" id="friends-list"></ul>
+        <ul data-role="listview" data-inset="false" data-theme="c" id="friends-list"></ul>
     </div>
 </div>
 
 <script type="x-mustache-template" id="friends_list_tmpl">
     {{#.}}
-    <li data-icon="false" data-name="{{ id }}"><a href="#" data-transition="slide"><img src="{{ picture.data.url }}"></img>{{ name }}</a></li>
+    <li data-icon="false" data-name="{{ id }}"><a href="#" data-transition="slide"><img src="{{ picture.data.url }}"></img>{{ gender }} </a></li>
     {{/.}}
 </script>
 </body>
