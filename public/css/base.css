@@ -1,7 +1,8 @@
 body { background: #fff; padding:13px; }
 body.ui-mobile-viewport { padding: 0; }
 body, input, textarea, select, button { font-family: Helvetica, Arial, san-serif; }
-.ui-mobile .type-home { background: #2d4681; }
+.ui-mobile .type-home { background: #ffffff; } 
+/*original coloer is #2d4681*/
 .ui-mobile .type-home .ui-content { margin: 0; text-align: center; }
 .ui-mobile .type-home .login-button { text-align: center;}
 .type-home .ui-content {
@@ -9,9 +10,9 @@ body, input, textarea, select, button { font-family: Helvetica, Arial, san-serif
 	overflow: hidden;
 	position: relative;
 }
-.ui-mobile #login-header { padding: 5px 5px 0; margin: 0 auto; }
-#login-header img { width: 72px; height: 72px; margin-top:10px; }
-img { max-width: 100%; }
+.ui-mobile #login-header { padding: 20px 5px 0; margin: 20px auto; }
+#login-header img { height: 100px; margin-top:10px; }
+img { max-width: 100%; margin: 30px;}
 
 span.topnav-app {
 	font-size: 1.1em;
@@ -38,13 +39,13 @@ span.topnav-app {
 }
 
 span.tagline {
-	font-size: 1.5em;
-	font-family: Zapfino, Helvetica, Arial, san-serif;
-	color: #99ccff;
+	font-size: 50px;
+	font-family: "Roboto Condensed", Arial, san-serif;
+	color: #A0A0A0;
 	text-shadow: 0px 0px #fff;
 	background: none;
-	padding-left: 10px;
-	vertical-align: text-bottom;
+/*	padding-left: 10px;
+*/	vertical-align: text-bottom;
 }
 
 p.intro {
@@ -75,7 +76,8 @@ p.intro {
 
 .ui-mobile .type-menu .ui-content .ui-listview li a p { 
 	font-size: 0.8em;
-	color: #99ccff; 
+	color: #A0A0A0;
+	/*color: #99ccff; */
 }
 
 .ui-mobile .type-menu .ui-content .ui-listview li a h3 { 
