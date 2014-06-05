@@ -45,6 +45,13 @@ app.get('/search', api.search);
 app.get('/friends', api.friends);
 app.post('/announce', api.announce);
 app.get('/chat', api.chat);
+app.get('/test/:id', function(req, res, next) {
+    if (true) { // logic for shit
+        res.render('chat.ejs');
+    } else {
+        next();
+    }
+})
 
 // Chatroom
 
