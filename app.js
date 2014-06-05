@@ -63,6 +63,7 @@ io.sockets.on('connection', function(socket) {
             var randint = Math.floor((Math.random() * 90000) + 10000);
             socket.room = randint;
             socket.join(randint);
+            // console.log(randint);
             socket.emit('updaterooms', randint);
             // ^Change to return randint
             available_rooms.push(randint);
@@ -71,6 +72,7 @@ io.sockets.on('connection', function(socket) {
             var randint = Math.floor(Math.random() * available_rooms.length);
             socket.room = available_rooms[randint];
             socket.join(available_rooms[randint]);
+            // console.log(available_rooms[randint]);
             socket.emit('updaterooms', available_rooms[randint]);
             available_rooms.splice(randint, 1);
         }

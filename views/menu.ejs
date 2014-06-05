@@ -106,7 +106,8 @@ socket.on('connect', function(){
 });
 socket.on('updaterooms', function(room){
     // manipulate DOM
-    $("#chatroom").attr("href", "/test/" + room);
+    // console.log(room);
+    $("#chat-button").attr("href", "/test/" + room);
 });
 </script>
 </body>
