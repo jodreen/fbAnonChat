@@ -54,15 +54,38 @@ app.get('/test/:id', function(req, res, next) {
 })
 
 // Chatroom
+var available_rooms = [];
 
+io.sockets.on('connection', function(socket) {
+    socket.on('new person', function(data) {
+        if (available_rooms.length == 0) {
+            // create new chat room
+            var randint = Math.floor((Math.random() * 90000) + 10000);
+            socket.room = randint;
+            socket.join(randint);
+            socket.emit('updaterooms', randint);
+            // ^Change to return randint
+            available_rooms.push(randint);
+        } else {
+            // filter through friends to find correct one
+            var randint = Math.floor(Math.random() * available_rooms.length);
+            socket.room = available_rooms[randint];
+            socket.join(available_rooms[randint]);
+            socket.emit('updaterooms', available_rooms[randint]);
+            available_rooms.splice(randint, 1);
+        }
+    });
+});
+
+// Chat Socket.IO
 // usernames which are currently connected to the chat
 var usernames = {};
 var numUsers = 0;
 
 io.on('connection', function(socket) {
     var addedUser = false;
-
     // when the client emits 'new message', this listens and executes
+    // Look at menu.ejs to connect with this
     socket.on('new message', function(data) {
         // we tell the client to execute 'new message'
         socket.broadcast.emit('new message', {
