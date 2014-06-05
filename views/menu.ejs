@@ -90,18 +90,13 @@
 </script>
 <script>
 var socket = io();
-// 
 socket.on('connect', function(){
-    // 
     socket.emit('new person', true); // replace true with friends
 });
-
 socket.on('updaterooms', function(room){
-    console.log(room);
     // manipulate DOM
     $("#chatroom").attr("href", "/test/" + room);
-})
-
+});
 </script>
 </body>
 </html>
