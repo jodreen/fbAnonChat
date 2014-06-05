@@ -1,12 +1,11 @@
 body {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px "Roboto Condensed", Helvetica, Arial, sans-serif;
 }
 
 a {
   color: #00B7FF;
 }
-
 
 /* Fix user-agent */
 * {
@@ -15,6 +14,7 @@ a {
 
 html {
   font-family:
+    "Roboto Condensed"
     "HelveticaNeue-Light",
     "Helvetica Neue Light",
     "Helvetica Neue",
