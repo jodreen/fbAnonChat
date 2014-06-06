@@ -38,69 +38,6 @@ app.configure('development', function() {
     app.use(express.errorHandler());
 });
 
-available_people = [];
-
-app.get('/', home.index);
-app.get('/login/callback', home.loginCallback);
-app.get('/logout', home.logout);
-// app.get('/friends', api.friends);
-app.get('/chat/:id', function(req, res, next) {
-    FB.api('fql', {
-        q: 'SELECT uid2 FROM friend WHERE uid1 = me()',
-        access_token: req.session.access_token
-    }, function(re) {
-        if (!re || re.error) {
-            console.log(!re ? 'error occurred' : re.error);
-            return;
-        }
-        FB.api('fql', {
-            q: 'SELECT uid FROM user WHERE uid=me()',
-            access_token: req.session.access_token
-        }, function(r) {
-            if (!re || re.error) {
-                console.log(!re ? 'error occurred' : re.error);
-                return;
-            }
-            var friends_list = re.data;
-            var num_friends = friends_list.length;
-            var mid = Math.floor(friends_list.length / 2);
-
-            // Iterate through all people that are available to chat
-            for (var i = 0; i < available_people.length; i++) {
-                // Binary Search
-                var minIndex = 0;
-                var maxIndex = friends_list.length - 1;
-                var currentIndex;
-                var currentElement;
-                while (minIndex <= maxIndex) {
-                    currentIndex = (minIndex + maxIndex) / 2 | 0;
-                    currentElement = friends_list[currentIndex];
-                    if (currentElement < available_people[i]) {
-                        minIndex = currentIndex + 1;
-                    } else if (currentElement > available_people[i]) {
-                        maxIndex = currentIndex - 1;
-                    } else {
-                        // Found a match at currentIndex!
-                        console.log('found a match!');
-                        available_people.splice(currentIndex, 1);
-                        break;
-                    }
-                }
-                // No Matches   
-                console.log('no matches!');
-                available_people.push(r.data[0]['uid']);
-            }
-            available_people.push(r.data[0]['uid']);
-            console.log(r.data[0]['uid']);
-            if (true) { // logic for shit
-                res.render('chat.ejs');
-            } else {
-                next();
-            }
-        });
-    });
-})
-
 // Chatroom
 var available_rooms = [];
 
@@ -126,6 +63,77 @@ io.sockets.on('connection', function(socket) {
         }
     });
 });
+
+available_people = [];
+
+app.get('/', home.index);
+app.get('/login/callback', home.loginCallback);
+app.get('/logout', home.logout);
+// app.get('/friends', api.friends);
+app.get('/chat/:id', function(req, res, next) {
+    FB.api('fql', {
+        q: 'SELECT uid2 FROM friend WHERE uid1 = me()',
+        access_token: req.session.access_token
+    }, function(re) {
+        if (!re || re.error) {
+            console.log(!re ? 'error occurred' : re.error);
+            return;
+        }
+        FB.api('fql', {
+            q: 'SELECT uid FROM user WHERE uid=me()',
+            access_token: req.session.access_token
+        }, function(r) {
+            if (!re || re.error) {
+                console.log(!re ? 'error occurred' : re.error);
+                return;
+            }
+            var friends_list = re.data;
+            // var num_friends = friends_list.length;
+
+            // Iterate through all people that are available to chat
+            function helper_function() {
+                if (available_people.length == 0) {
+                    available_people.push(r.data[0]['uid']);
+                    return;
+                }
+                for (var i = 0; i < available_people.length; i++) {
+                    // Binary Search
+                    var minIndex = 0;
+                    var maxIndex = friends_list.length - 1;
+                    var currentIndex;
+                    var currentElement;
+                    while (minIndex <= maxIndex) {
+                        currentIndex = (minIndex + maxIndex) / 2 | 0;
+                        currentElement = friends_list[currentIndex];
+                        if (currentElement < available_people[i]) {
+                            minIndex = currentIndex + 1;
+                        } else if (currentElement > available_people[i]) {
+                            maxIndex = currentIndex - 1;
+                        } else {
+                            // Found a match at currentIndex!
+                            console.log('found a match!');
+                            var index = available_people.indexOf(available_people[i]);;
+                            available_people.splice(index, 1);
+                            return;
+                        }
+                    }
+                    // No Matches   
+                    console.log('no matches!');
+                    available_people.push(r.data[0]['uid']);
+                    return;
+                }
+            }
+            helper_function();
+            console.log(available_people);
+            console.log(available_rooms);
+            if (true) { // logic for shit
+                res.render('chat.ejs');
+            } else {
+                next();
+            }
+        });
+    });
+})
 
 // Chat Socket.IO
 // usernames which are currently connected to the chat
