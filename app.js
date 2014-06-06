@@ -40,6 +40,7 @@ app.configure('development', function() {
 
 // Chatroom
 var available_rooms = [];
+var available_people = [];
 
 io.sockets.on('connection', function(socket) {
     socket.on('new person', function(data) {
@@ -48,23 +49,25 @@ io.sockets.on('connection', function(socket) {
             var randint = Math.floor((Math.random() * 90000) + 10000);
             socket.room = randint;
             socket.join(randint);
-            // console.log(randint);
             socket.emit('updaterooms', randint);
-            // ^Change to return randint
-            available_rooms.push(randint);
+            // available_rooms.push(randint);
+            console.log('available rooms: ' + available_rooms);
+            console.log('available people: ' + available_people);
         } else {
             // filter through friends to find correct one
             var randint = Math.floor(Math.random() * available_rooms.length);
             socket.room = available_rooms[randint];
             socket.join(available_rooms[randint]);
-            // console.log(available_rooms[randint]);
             socket.emit('updaterooms', available_rooms[randint]);
             available_rooms.splice(randint, 1);
         }
     });
+    socket.on('clicked', function(blah) {
+        console.log('HOLY SHIT IT GOT HERE');
+        // console.log(blah.substring(6, blah.length));
+        available_rooms.push(blah.substring(6, blah.length));
+    });
 });
-
-available_people = [];
 
 app.get('/', home.index);
 app.get('/login/callback', home.loginCallback);
@@ -124,8 +127,8 @@ app.get('/chat/:id', function(req, res, next) {
                 }
             }
             helper_function();
-            console.log(available_people);
-            console.log(available_rooms);
+            console.log('available_people: ' + available_people);
+            console.log('available_rooms: ' + available_rooms);
             if (true) { // logic for shit
                 res.render('chat.ejs');
             } else {
