@@ -50,9 +50,7 @@ io.sockets.on('connection', function(socket) {
             socket.room = randint;
             socket.join(randint);
             socket.emit('updaterooms', randint);
-            // available_rooms.push(randint);
-            console.log('available rooms: ' + available_rooms);
-            console.log('available people: ' + available_people);
+            available_rooms.push(randint);
         } else {
             // filter through friends to find correct one
             var randint = Math.floor(Math.random() * available_rooms.length);
@@ -63,9 +61,8 @@ io.sockets.on('connection', function(socket) {
         }
     });
     socket.on('clicked', function(blah) {
-        console.log('HOLY SHIT IT GOT HERE');
-        // console.log(blah.substring(6, blah.length));
-        available_rooms.push(blah.substring(6, blah.length));
+        // console.log('available rooms: ' + available_rooms);
+        // console.log('available people: ' + available_people);
     });
 });
 
@@ -91,8 +88,6 @@ app.get('/chat/:id', function(req, res, next) {
                 return;
             }
             var friends_list = re.data;
-            // var num_friends = friends_list.length;
-
             // Iterate through all people that are available to chat
             function helper_function() {
                 if (available_people.length == 0) {
@@ -117,6 +112,8 @@ app.get('/chat/:id', function(req, res, next) {
                             console.log('found a match!');
                             var index = available_people.indexOf(available_people[i]);;
                             available_people.splice(index, 1);
+                            // console.log(currentIndex);
+                            // available_rooms.
                             return;
                         }
                     }
