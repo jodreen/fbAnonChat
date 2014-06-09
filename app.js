@@ -47,7 +47,8 @@ app.configure('development', function() {
 
 var p_to_room_dict = {};
 var room_to_p_dict = {};
-var sid_to_p_dict = {}
+var sid_to_p_dict = {};
+var p_to_sid_dict = {};
 var temp = []; // temp[0] = room, temp[1] = FB_id
 var MAXIMUM_ROOM_CAPACITY = 2;
 
@@ -56,12 +57,14 @@ io.sockets.on('connection', function(socket) {
         // populate data from '/' before deciding on room number
         setTimeout(function() {
             sid_to_p_dict[socket.id] = temp[1];
+            p_to_sid_dict[temp[1]] = socket.id;
             socket.emit('updaterooms', temp);
         }, 1000);
     });
     socket.on('clicked', function(data) {
         // CHANGE AVAILABLE ROOMS/PEOPLE
         console.log('CLICKED');
+        // console.log(temp);
         p_to_room_dict[temp[1]] = temp[0];
         room_to_p_dict[temp[0]].push(temp[1]);
     });
@@ -153,6 +156,26 @@ io.on('connection', function(socket) {
     // Look at menu.ejs to connect with this
     socket.on('new message', function(data) {
         // we tell the client to execute 'new message'
+
+        // Attempt to implement multi chat rooms
+
+        // console.log('socket id: ' + socket.id);
+        // console.log(sid_to_p_dict);
+        // var client = sid_to_p_dict[socket.id];
+        // // console.log('client: ' + client);
+        // var roomofclient = p_to_room_dict[client];
+        // // console.log('p_to_room_dict: ' + p_to_room_dict);
+        // // console.log(p_to_room_dict);
+        // // console.log('roomofclient: ' + roomofclient);
+        // var usersinroom = room_to_p_dict[roomofclient];
+        // // console.log(usersinroom);
+        // for (var y = 0; y < usersinroom.length; y++) {
+        //     io.sockets.socket(p_to_sid_dict[usersinroom[y]]).emit('new message', {
+        //         username: socket.username,
+        //         message: data
+        //     });
+        // }
+
         socket.broadcast.emit('new message', {
             username: socket.username,
             message: data
