@@ -45,39 +45,25 @@ app.configure('development', function() {
     app.use(express.errorHandler());
 });
 
-// Chatroom
-var available_rooms = [];
-var available_people = [];
+var p_to_room_dict = {};
+var room_to_p_dict = {};
+var sid_to_p_dict = {}
+var temp = []; // temp[0] = room, temp[1] = FB_id
+var MAXIMUM_ROOM_CAPACITY = 2;
 
 io.sockets.on('connection', function(socket) {
     socket.on('new person', function(data) {
-
         // populate data from '/' before deciding on room number
         setTimeout(function() {
-            console.log('these are the ids of people that are in the room: ' + available_people);
-            if (available_rooms.length == 0) {
-                // create new chat room
-                var randint = Math.floor((Math.random() * 90000) + 10000);
-                socket.room = randint;
-                socket.join(randint);
-                socket.emit('updaterooms', randint);
-                available_rooms.push(randint);
-            } else {
-                // filter through friends to find correct one
-                var randint = Math.floor(Math.random() * available_rooms.length);
-                socket.room = available_rooms[randint];
-                socket.join(available_rooms[randint]);
-                socket.emit('updaterooms', available_rooms[randint]);
-                available_rooms.splice(randint, 1);
-            }
-
+            sid_to_p_dict[socket.id] = temp[1];
+            socket.emit('updaterooms', temp);
         }, 1000);
     });
     socket.on('clicked', function(data) {
-
         // CHANGE AVAILABLE ROOMS/PEOPLE
         console.log('CLICKED');
-
+        p_to_room_dict[temp[1]] = temp[0];
+        room_to_p_dict[temp[0]].push(temp[1]);
     });
 });
 
@@ -108,50 +94,36 @@ app.get('/', function(req, res) {
                     return;
                 }
                 var friends_list = re.data;
+                var friends_list_2 = [];
                 // Iterate through all people that are available to chat
+                for (var i = 0; i < friends_list.length; i++) {
+                    friends_list_2.push(friends_list[i]['uid2']);
+                }
+
                 function helper_function() {
-                    if (available_people.length == 0) {
-                        available_people.push(r.data[0]['uid']);
-                        return;
-                    }
-                    for (var i = 0; i < available_people.length; i++) {
-                        // Binary Search
-                        var minIndex = 0;
-                        var maxIndex = friends_list.length - 1;
-                        var currentIndex;
-                        var currentElement;
-                        while (minIndex <= maxIndex) {
-                            currentIndex = (minIndex + maxIndex) / 2 | 0;
-                            currentElement = friends_list[currentIndex];
-                            if (currentElement < available_people[i]) {
-                                minIndex = currentIndex + 1;
-                            } else if (currentElement > available_people[i]) {
-                                maxIndex = currentIndex - 1;
-                            } else {
-                                // Found a match at currentIndex!
-                                console.log('found a match!');
-                                var index = available_people.indexOf(available_people[i]);;
-                                available_people.splice(index, 1);
-                                // console.log(currentIndex);
-                                // available_rooms.
-                                return;
+                    var randint = Math.floor((Math.random() * 90000) + 10000);
+                    temp[0] = randint;
+                    temp[1] = r.data[0]['uid'];
+                    var isValid = true;
+                    for (var key in p_to_room_dict) {
+                        if (friends_list_2.indexOf(key) != -1) { // friend found
+                            var curr_room_list = room_to_p_dict[p_to_room_dict[key]];
+                            if (curr_room_list.length <= MAXIMUM_ROOM_CAPACITY) { // room at maximum capacity
+                                for (var x = 0; x < curr_room_list.length; x++) { // loop through people in interested room
+                                    if (friends_list_2.indexOf(curr_room_list[x].toString()) == -1) {
+                                        isValid = false; // enforce clique
+                                    }
+                                }
+                                if (isValid) {
+                                    temp[0] = p_to_room_dict[key];
+                                    return;
+                                }
                             }
                         }
-                        // No Matches   
-                        console.log('no matches!');
-                        available_people.push(r.data[0]['uid']);
-                        return;
                     }
+                    room_to_p_dict[temp[0]] = [];
                 }
-                // console.log(available_people + ' before helper_function is called');
                 helper_function();
-                console.log('available_people: ' + available_people);
-                console.log('available_rooms: ' + available_rooms);
-                // if (true) { // logic for shit
-                //     res.render('chat.ejs');
-                // } else {
-                //     next();
-                // }
             });
         });
         res.render('menu');

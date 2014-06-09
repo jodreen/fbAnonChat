@@ -104,10 +104,10 @@ var socket = io();
 socket.on('connect', function(){
     socket.emit('new person', true); // replace true with friends
 });
-socket.on('updaterooms', function(room){
+socket.on('updaterooms', function(temp){
     // manipulate DOM
-    // console.log(room);
-    $("#chat-button").attr("href", "/chat/" + room);
+    // console.log(temp);
+    $("#chat-button").attr("href", "/chat/" + temp[0]);
 });
 </script>
 </body>
