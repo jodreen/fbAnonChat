@@ -8,20 +8,6 @@ FB.options({
     redirectUri: config.facebook.redirectUri
 });
 
-exports.index = function(req, res) {
-    var accessToken = req.session.access_token;
-    if (!accessToken) {
-        res.render('index', {
-            title: 'Express',
-            loginUrl: FB.getLoginUrl({
-                scope: 'user_about_me'
-            })
-        });
-    } else {
-        res.render('menu');
-    }
-};
-
 exports.loginCallback = function(req, res, next) {
     var code = req.query.code;
     if (req.query.error) {
