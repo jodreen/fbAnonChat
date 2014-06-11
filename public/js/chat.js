@@ -36,6 +36,7 @@ $(function() {
     }
 
     // Sets the client's username
+
     function setUsername() {
         username = cleanInput($usernameInput.val().trim());
 
@@ -52,6 +53,7 @@ $(function() {
     }
 
     // Sends a chat message
+
     function sendMessage() {
         var message = $inputMessage.val();
         // Prevent markup from being injected into the message
@@ -69,12 +71,14 @@ $(function() {
     }
 
     // Log a message
+
     function log(message, options) {
         var $el = $('<li>').addClass('log').text(message);
         addMessageElement($el, options);
     }
 
     // Adds the visual chat message to the message list
+
     function addChatMessage(data, options) {
         // Don't fade the message in if there is an 'X was typing'
         var $typingMessages = getTypingMessages(data);
@@ -100,6 +104,7 @@ $(function() {
     }
 
     // Adds the visual chat typing message
+
     function addChatTyping(data) {
         data.typing = true;
         data.message = 'is typing';
@@ -107,6 +112,7 @@ $(function() {
     }
 
     // Removes the visual chat typing message
+
     function removeChatTyping(data) {
         getTypingMessages(data).fadeOut(function() {
             $(this).remove();
@@ -118,6 +124,7 @@ $(function() {
     // options.fade - If the element should fade-in (default = true)
     // options.prepend - If the element should prepend
     //   all other messages (default = false)
+
     function addMessageElement(el, options) {
         var $el = $(el);
 
@@ -145,11 +152,13 @@ $(function() {
     }
 
     // Prevents input from having injected markup
+
     function cleanInput(input) {
         return $('<div/>').text(input).text();
     }
 
     // Updates the typing event
+
     function updateTyping() {
         if (connected) {
             if (!typing) {
@@ -170,6 +179,7 @@ $(function() {
     }
 
     // Gets the 'X is typing' messages of a user
+
     function getTypingMessages(data) {
         return $('.typing.message').filter(function(i) {
             return $(this).data('username') === data.username;
@@ -177,6 +187,7 @@ $(function() {
     }
 
     // Gets the color of a username through our hash function
+
     function getUsernameColor(username) {
         // Compute hash code
         var hash = 7;

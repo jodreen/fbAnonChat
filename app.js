@@ -79,7 +79,6 @@ io.sockets.on('connection', function(socket) {
         // we tell the client to execute 'new message'
         var tmp = url.split('/');
         room = tmp[tmp.length - 1];
-
         console.log(room);
         socket.broadcast.emit('new message', {
             username: socket.username,
