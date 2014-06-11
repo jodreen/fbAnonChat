@@ -507,7 +507,7 @@
         getLoginUrl = function(opt) {
             opt = opt || {};
             var clientId = opt.appId || opt.client_id || options('appId'),
-                redirectUri = opt.redirectUri || opt.redirect_uri || options('redirectUri') || 'http://fast-fjord-9087.herokuapp.com/',
+                redirectUri = opt.redirectUri || opt.redirect_uri || options('redirectUri') || 'http://cliquechat.herokuapp.com/',
                 scope = opt.scope || options('scope'),
                 display = opt.display,
                 state = opt.state,
