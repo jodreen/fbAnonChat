@@ -94,13 +94,19 @@ io.sockets.on('connection', function(socket) {
         usernames[username] = username;
         ++numUsers;
         addedUser = true;
+
+        var tmp = url.split('/');
+        room = tmp[tmp.length - 1];
+
         socket.emit('login', {
             numUsers: numUsers,
+            room: room
         });
         // echo globally (all clients) that a person has connected
         socket.broadcast.emit('user joined', {
             username: socket.username,
-            numUsers: numUsers
+            numUsers: numUsers,
+            room: room
         });
     });
 

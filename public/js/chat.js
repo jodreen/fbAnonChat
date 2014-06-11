@@ -227,6 +227,10 @@ $(function() {
 
     // Whenever the server emits 'login', log the login message
     socket.on('login', function(data) {
+        var url = window.location.href;
+        var tmp = url.split('/');
+        room = tmp[tmp.length - 1];
+
         connected = true;
         // Display the welcome message
         var message = "Welcome to Facebook Anonymous Chat";
@@ -250,8 +254,15 @@ $(function() {
 
     // Whenever the server emits 'user joined', log it in the chat body
     socket.on('user joined', function(data) {
-        log(data.username + ' joined');
-        addParticipantsMessage(data);
+        var url = window.location.href;
+        var tmp = url.split('/');
+        room = tmp[tmp.length - 1];
+        if (data.room != room) {
+            return;
+        } else {
+            log(data.username + ' joined');
+            addParticipantsMessage(data);
+        }
     });
 
     // Whenever the server emits 'user left', log it in the chat body
