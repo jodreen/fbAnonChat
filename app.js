@@ -52,14 +52,18 @@ var p_to_sid_dict = {};
 var temp = []; // temp[0] = room, temp[1] = FB_id
 var MAXIMUM_ROOM_CAPACITY = 2;
 
+var usernames = {};
+var numUsers = 0;
+
 io.sockets.on('connection', function(socket) {
+    var addedUser = false;
     socket.on('new person', function(data) {
         // populate data from '/' before deciding on room number
         setTimeout(function() {
             sid_to_p_dict[socket.id] = temp[1];
             p_to_sid_dict[temp[1]] = socket.id;
             socket.emit('updaterooms', temp);
-        }, 1000);
+        }, 500);
     });
     socket.on('clicked', function(data) {
         // CHANGE AVAILABLE ROOMS/PEOPLE
@@ -68,6 +72,69 @@ io.sockets.on('connection', function(socket) {
         p_to_room_dict[temp[1]] = temp[0];
         room_to_p_dict[temp[0]].push(temp[1]);
     });
+
+    // CHAT STUFF
+    // when the client emits 'new message', this listens and executes
+    socket.on('new message', function(data, url) {
+        // we tell the client to execute 'new message'
+        var tmp = url.split('/');
+        room = tmp[tmp.length - 1];
+
+        console.log(room);
+        socket.broadcast.emit('new message', {
+            username: socket.username,
+            message: data,
+            room: room
+        });
+    });
+
+    // when the client emits 'add user', this listens and executes
+    socket.on('add user', function(username) {
+        // we store the username in the socket session for this client
+        socket.username = username;
+        // add the client's username to the global list
+        usernames[username] = username;
+        ++numUsers;
+        addedUser = true;
+        socket.emit('login', {
+            numUsers: numUsers
+        });
+        // echo globally (all clients) that a person has connected
+        socket.broadcast.emit('user joined', {
+            username: socket.username,
+            numUsers: numUsers
+        });
+    });
+
+    // when the client emits 'typing', we broadcast it to others
+    socket.on('typing', function() {
+        socket.broadcast.emit('typing', {
+            username: socket.username
+        });
+    });
+
+    // when the client emits 'stop typing', we broadcast it to others
+    socket.on('stop typing', function() {
+        socket.broadcast.emit('stop typing', {
+            username: socket.username
+        });
+    });
+
+    // when the user disconnects.. perform this
+    socket.on('disconnect', function() {
+        // remove the username from global usernames list
+        if (addedUser) {
+            delete usernames[socket.username];
+            --numUsers;
+
+            // echo globally that this client has left
+            socket.broadcast.emit('user left', {
+                username: socket.username,
+                numUsers: numUsers
+            });
+        }
+    });
+
 });
 
 app.get('/', function(req, res) {
@@ -144,88 +211,3 @@ app.get('/chat/:id', function(req, res, next) {
         next();
     }
 })
-
-// Chat Socket.IO
-// usernames which are currently connected to the chat
-var usernames = {};
-var numUsers = 0;
-
-io.on('connection', function(socket) {
-    var addedUser = false;
-    // when the client emits 'new message', this listens and executes
-    // Look at menu.ejs to connect with this
-    socket.on('new message', function(data) {
-        // we tell the client to execute 'new message'
-
-        // Attempt to implement multi chat rooms
-
-        // console.log('socket id: ' + socket.id);
-        // console.log(sid_to_p_dict);
-        // var client = sid_to_p_dict[socket.id];
-        // // console.log('client: ' + client);
-        // var roomofclient = p_to_room_dict[client];
-        // // console.log('p_to_room_dict: ' + p_to_room_dict);
-        // // console.log(p_to_room_dict);
-        // // console.log('roomofclient: ' + roomofclient);
-        // var usersinroom = room_to_p_dict[roomofclient];
-        // // console.log(usersinroom);
-        // for (var y = 0; y < usersinroom.length; y++) {
-        //     io.sockets.socket(p_to_sid_dict[usersinroom[y]]).emit('new message', {
-        //         username: socket.username,
-        //         message: data
-        //     });
-        // }
-
-        socket.broadcast.emit('new message', {
-            username: socket.username,
-            message: data
-        });
-    });
-
-    // when the client emits 'add user', this listens and executes
-    socket.on('add user', function(username) {
-        // we store the username in the socket session for this client
-        socket.username = username;
-        // add the client's username to the global list
-        usernames[username] = username;
-        ++numUsers;
-        addedUser = true;
-        socket.emit('login', {
-            numUsers: numUsers
-        });
-        // echo globally (all clients) that a person has connected
-        socket.broadcast.emit('user joined', {
-            username: socket.username,
-            numUsers: numUsers
-        });
-    });
-
-    // when the client emits 'typing', we broadcast it to others
-    socket.on('typing', function() {
-        socket.broadcast.emit('typing', {
-            username: socket.username
-        });
-    });
-
-    // when the client emits 'stop typing', we broadcast it to others
-    socket.on('stop typing', function() {
-        socket.broadcast.emit('stop typing', {
-            username: socket.username
-        });
-    });
-
-    // when the user disconnects.. perform this
-    socket.on('disconnect', function() {
-        // remove the username from global usernames list
-        if (addedUser) {
-            delete usernames[socket.username];
-            --numUsers;
-
-            // echo globally that this client has left
-            socket.broadcast.emit('user left', {
-                username: socket.username,
-                numUsers: numUsers
-            });
-        }
-    });
-});

@@ -64,7 +64,7 @@ $(function() {
                 message: message
             });
             // tell server to execute 'new message' and send along one parameter
-            socket.emit('new message', message);
+            socket.emit('new message', message, window.location.href);
         }
     }
 
@@ -238,7 +238,14 @@ $(function() {
 
     // Whenever the server emits 'new message', update the chat body
     socket.on('new message', function(data) {
-        addChatMessage(data);
+        var url = window.location.href;
+        var tmp = url.split('/');
+        room = tmp[tmp.length - 1];
+        if (data.room != room) {
+            return;
+        } else {
+            addChatMessage(data);
+        }
     });
 
     // Whenever the server emits 'user joined', log it in the chat body
