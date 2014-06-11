@@ -48,7 +48,7 @@ $(function() {
             $currentInput = $inputMessage.focus();
 
             // Tell the server your username
-            socket.emit('add user', username);
+            socket.emit('add user', username, window.location.href);
         }
     }
 
@@ -163,7 +163,7 @@ $(function() {
         if (connected) {
             if (!typing) {
                 typing = true;
-                socket.emit('typing');
+                socket.emit('typing', window.location.href);
             }
             lastTypingTime = (new Date()).getTime();
 
@@ -171,7 +171,7 @@ $(function() {
                 var typingTimer = (new Date()).getTime();
                 var timeDiff = typingTimer - lastTypingTime;
                 if (timeDiff >= TYPING_TIMER_LENGTH && typing) {
-                    socket.emit('stop typing');
+                    socket.emit('stop typing', window.location.href);
                     typing = false;
                 }
             }, TYPING_TIMER_LENGTH);
@@ -210,7 +210,7 @@ $(function() {
         if (event.which === 13) {
             if (username) {
                 sendMessage();
-                socket.emit('stop typing');
+                socket.emit('stop typing', window.location.href);
                 typing = false;
             } else {
                 setUsername();
@@ -238,6 +238,10 @@ $(function() {
 
     // Whenever the server emits 'login', log the login message
     socket.on('login', function(data) {
+        var url = window.location.href;
+        var tmp = url.split('/');
+        room = tmp[tmp.length - 1];
+
         connected = true;
         // Display the welcome message
         var message = "Welcome to Facebook Anonymous Chat";
@@ -261,8 +265,15 @@ $(function() {
 
     // Whenever the server emits 'user joined', log it in the chat body
     socket.on('user joined', function(data) {
-        log(data.username + ' joined');
-        addParticipantsMessage(data);
+        var url = window.location.href;
+        var tmp = url.split('/');
+        room = tmp[tmp.length - 1];
+        if (data.room != room) {
+            return;
+        } else {
+            log(data.username + ' joined');
+            addParticipantsMessage(data);
+        }
     });
 
     // Whenever the server emits 'user left', log it in the chat body
@@ -274,11 +285,25 @@ $(function() {
 
     // Whenever the server emits 'typing', show the typing message
     socket.on('typing', function(data) {
-        addChatTyping(data);
+        var url = window.location.href;
+        var tmp = url.split('/');
+        room = tmp[tmp.length - 1];
+        if (data.room != room) {
+            return;
+        } else {
+            addChatTyping(data);
+        }
     });
 
     // Whenever the server emits 'stop typing', kill the typing message
     socket.on('stop typing', function(data) {
-        removeChatTyping(data);
+        var url = window.location.href;
+        var tmp = url.split('/');
+        room = tmp[tmp.length - 1];
+        if (data.room != room) {
+            return;
+        } else {
+            removeChatTyping(data);
+        }
     });
 });

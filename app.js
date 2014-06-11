@@ -88,34 +88,46 @@ io.sockets.on('connection', function(socket) {
     });
 
     // when the client emits 'add user', this listens and executes
-    socket.on('add user', function(username) {
+    socket.on('add user', function(username, url) {
         // we store the username in the socket session for this client
         socket.username = username;
         // add the client's username to the global list
         usernames[username] = username;
         ++numUsers;
         addedUser = true;
+
+        var tmp = url.split('/');
+        room = tmp[tmp.length - 1];
+
         socket.emit('login', {
-            numUsers: numUsers
+            numUsers: numUsers,
+            room: room
         });
         // echo globally (all clients) that a person has connected
         socket.broadcast.emit('user joined', {
             username: socket.username,
-            numUsers: numUsers
+            numUsers: numUsers,
+            room: room
         });
     });
 
     // when the client emits 'typing', we broadcast it to others
-    socket.on('typing', function() {
+    socket.on('typing', function(url) {
+        var tmp = url.split('/');
+        room = tmp[tmp.length - 1];
         socket.broadcast.emit('typing', {
-            username: socket.username
+            username: socket.username,
+            room: room
         });
     });
 
     // when the client emits 'stop typing', we broadcast it to others
-    socket.on('stop typing', function() {
+    socket.on('stop typing', function(url) {
+        var tmp = url.split('/');
+        room = tmp[tmp.length - 1];
         socket.broadcast.emit('stop typing', {
-            username: socket.username
+            username: socket.username,
+            room: room
         });
     });
 
