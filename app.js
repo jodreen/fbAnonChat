@@ -53,6 +53,7 @@ var temp = []; // temp[0] = room, temp[1] = FB_id
 var MAXIMUM_ROOM_CAPACITY = 2;
 var room_to_people_count = {};
 var username_to_room = {};
+var usernameList = [];
 
 var usernames = {};
 var numUsers = 0;
@@ -69,7 +70,7 @@ io.sockets.on('connection', function(socket) {
     });
     socket.on('clicked', function(data) {
         // CHANGE AVAILABLE ROOMS/PEOPLE
-        console.log('CLICKED');
+        // console.log('CLICKED');
         // console.log(temp);
         p_to_room_dict[temp[1]] = temp[0];
         room_to_p_dict[temp[0]].push(temp[1]);
@@ -96,6 +97,7 @@ io.sockets.on('connection', function(socket) {
         usernames[username] = username;
         ++numUsers;
         addedUser = true;
+        usernameList.push(username);
 
         var tmp = url.split('/');
         room = tmp[tmp.length - 1];
@@ -147,6 +149,11 @@ io.sockets.on('connection', function(socket) {
             delete usernames[socket.username];
             --numUsers;
 
+            var index = usernameList.indexOf(socket.username);
+            if (index > -1) {
+                usernameList.splice(index, 1);
+            }
+
             var room = username_to_room[socket.username];
             room_to_people_count[room] = room_to_people_count[room] - 1;
 
@@ -157,6 +164,12 @@ io.sockets.on('connection', function(socket) {
                 left_room: room
             });
         }
+    });
+
+    socket.on('get usernamelist', function() {
+        socket.emit('usernamelist', {
+            list: usernameList
+        });
     });
 
 });

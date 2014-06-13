@@ -29,8 +29,6 @@ $(function() {
     var typing = false;
     var lastTypingTime;
     var $currentInput = $usernameInput.focus();
-    var usernameList = ["Hello"];
-
     var socket = io();
 
     function addParticipantsMessage(data) {
@@ -43,16 +41,6 @@ $(function() {
         log(message);
     }
 
-    function validateForm() {
-        testUsername = $usernameInput.val().trim();
-        if (usernameList.indexOf(testUsername) > -1) {
-            alert("Sorry, that identity has already been taken. Choose another.");
-            return false;
-        } else {
-            return true;
-        }
-    }
-
     // Sets the client's username
 
     function setUsername() {
@@ -61,8 +49,6 @@ $(function() {
         // var isValid = validateForm();
         // if (isValid) {
         if (username) {
-            usernameList.push(username);
-            console.log(usernameList);
             $loginPage.fadeOut();
             $chatPage.show();
             $loginPage.off('click');
@@ -235,9 +221,7 @@ $(function() {
                 socket.emit('stop typing', window.location.href);
                 typing = false;
             } else {
-                if (validateForm()) {
-                    setUsername();
-                }
+                socket.emit('get usernamelist');
             }
         }
     });
@@ -259,6 +243,14 @@ $(function() {
     });
 
     // Socket events
+    socket.on('usernamelist', function(data) {
+        testUsername = $usernameInput.val().trim();
+        if (data.list.indexOf(testUsername) > -1) {
+            alert("Sorry, that identity has already been taken. Choose another.");
+        } else {
+            setUsername();
+        }
+    });
 
     // Whenever the server emits 'login', log the login message
     socket.on('login', function(data) {
