@@ -2,10 +2,17 @@ $(function() {
     var FADE_TIME = 150; // ms
     var TYPING_TIMER_LENGTH = 400; // ms
     var COLORS = [
-        '#e21400', '#91580f', '#f8a700', '#f78b00',
-        '#58dc00', '#287b00', '#a8f07a', '#4ae8c4',
-        '#3b88eb', '#3824aa', '#a700ff', '#d300e7'
+        '#f78b00', '#859900', '#2aa198',
+        '#5e8285', '#073642',
+        '#273369', '#91bdb3'
     ];
+
+    // var COLORS = [
+    //     '#e21400' (red),  '#91580f'(burnt orange),
+    //      '#f8a700' (yellow), '#f78b00 (green)',
+    //     '#58dc00', '#287b00', '#a8f07a', '#4ae8c4',
+    //     '#3b88eb', '#3824aa', '#a700ff', '#d300e7'
+    // ];
 
     // Initialize varibles
     var $window = $(window);
@@ -54,6 +61,8 @@ $(function() {
         // var isValid = validateForm();
         // if (isValid) {
         if (username) {
+            usernameList.push(username);
+            console.log(usernameList);
             $loginPage.fadeOut();
             $chatPage.show();
             $loginPage.off('click');
@@ -68,7 +77,6 @@ $(function() {
     // Sends a chat message
 
     function sendMessage() {
-
         var message = $inputMessage.val();
         // Prevent markup from being injected into the message
         message = cleanInput(message);
