@@ -53,7 +53,7 @@ $(function() {
             $chatPage.show();
             $loginPage.off('click');
             $currentInput = $inputMessage.focus();
-
+            $("#username").text(username);
             // Tell the server your username
             socket.emit('add user', username, window.location.href);
         }
