@@ -52,6 +52,7 @@ var p_to_sid_dict = {};
 var temp = []; // temp[0] = room, temp[1] = FB_id
 var MAXIMUM_ROOM_CAPACITY = 2;
 var room_to_people_count = {};
+var username_to_room = {};
 
 var usernames = {};
 var numUsers = 0;
@@ -99,6 +100,8 @@ io.sockets.on('connection', function(socket) {
         var tmp = url.split('/');
         room = tmp[tmp.length - 1];
 
+        username_to_room[socket.username] = room;
+
         if (Object.keys(room_to_people_count).indexOf(room) == -1) { // Room is newly being added
             room_to_people_count[room] = 1;
         } else {
@@ -144,10 +147,14 @@ io.sockets.on('connection', function(socket) {
             delete usernames[socket.username];
             --numUsers;
 
+            var room = username_to_room[socket.username];
+            room_to_people_count[room] = room_to_people_count[room] - 1;
+
             // echo globally that this client has left
             socket.broadcast.emit('user left', {
                 username: socket.username,
-                numUsers: numUsers
+                numUsers: room_to_people_count[room],
+                left_room: room
             });
         }
     });
