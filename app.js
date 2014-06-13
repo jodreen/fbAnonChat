@@ -242,7 +242,7 @@ app.get('/logout', home.logout);
 // app.get('/friends', api.friends);
 app.get('/chat/:id', function(req, res, next) {
     // console.log(Number(req.params.id));
-    if (Number(req.params.id) != NaN && room_to_people_count[req.params.id] < MAXIMUM_ROOM_CAPACITY) { // logic for shit
+    if (Number(req.params.id) != NaN && Object.keys(room_to_people_count).indexOf(req.params.id) != -1 && room_to_people_count[req.params.id] < MAXIMUM_ROOM_CAPACITY) { // logic for shit
         res.render('chat.ejs');
     } else {
         next();
