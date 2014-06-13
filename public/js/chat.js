@@ -22,6 +22,7 @@ $(function() {
     var typing = false;
     var lastTypingTime;
     var $currentInput = $usernameInput.focus();
+    var usernameList = ["Hello"];
 
     var socket = io();
 
@@ -35,12 +36,23 @@ $(function() {
         log(message);
     }
 
+    function validateForm() {
+        testUsername = $usernameInput.val().trim();
+        if (usernameList.indexOf(testUsername) > -1) {
+            alert("Sorry, that identity has already been taken. Choose another.");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     // Sets the client's username
 
     function setUsername() {
         username = cleanInput($usernameInput.val().trim());
-
         // If the username is valid
+        // var isValid = validateForm();
+        // if (isValid) {
         if (username) {
             $loginPage.fadeOut();
             $chatPage.show();
@@ -50,11 +62,13 @@ $(function() {
             // Tell the server your username
             socket.emit('add user', username, window.location.href);
         }
+
     }
 
     // Sends a chat message
 
     function sendMessage() {
+
         var message = $inputMessage.val();
         // Prevent markup from being injected into the message
         message = cleanInput(message);
@@ -213,7 +227,9 @@ $(function() {
                 socket.emit('stop typing', window.location.href);
                 typing = false;
             } else {
-                setUsername();
+                if (validateForm()) {
+                    setUsername();
+                }
             }
         }
     });

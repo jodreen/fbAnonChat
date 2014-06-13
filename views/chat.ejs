@@ -5,6 +5,9 @@
   <title>Facebook Anonymous Chat</title>
   <link rel="stylesheet"  href="/css/style.css" />
   <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
+  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/chat.js"></script>
 </head>
 <body>
   <ul class="pages">
@@ -17,15 +20,13 @@
       </div>
     </li>
     <li class="login page">
-      <div class="form">
+      <div class="form" >
         <h3 class="title">Choose your secret identity:</h3>
-        <input class="usernameInput" type="text" maxlength="14"/>
+        <input class="usernameInput" type="text" maxlength="14" />
       </div>
     </li>
   </ul>
 
-  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/js/chat.js"></script>
+
 </body>
 </html>
