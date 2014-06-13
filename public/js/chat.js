@@ -38,7 +38,7 @@ $(function() {
         if (data.numUsers === 1) {
             message += "there's 1 participant";
         } else {
-            message += "there're " + data.numUsers + " participants";
+            message += "there are " + data.numUsers + " participants";
         }
         log(message);
     }
@@ -302,9 +302,14 @@ $(function() {
 
     // Whenever the server emits 'user left', log it in the chat body
     socket.on('user left', function(data) {
-        log(data.username + ' left');
-        addParticipantsMessage(data);
-        removeChatTyping(data);
+        var url = window.location.href;
+        var tmp = url.split('/');
+        room = tmp[tmp.length - 1];
+        if (data.left_room == room) {
+            log(data.username + ' left');
+            addParticipantsMessage(data);
+            removeChatTyping(data);
+        }
     });
 
     // Whenever the server emits 'typing', show the typing message
