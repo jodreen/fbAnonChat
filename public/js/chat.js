@@ -2,10 +2,17 @@ $(function() {
     var FADE_TIME = 150; // ms
     var TYPING_TIMER_LENGTH = 400; // ms
     var COLORS = [
-        '#e21400', '#91580f', '#f8a700', '#f78b00',
-        '#58dc00', '#287b00', '#a8f07a', '#4ae8c4',
-        '#3b88eb', '#3824aa', '#a700ff', '#d300e7'
+        '#f78b00', '#859900', '#2aa198',
+        '#5e8285', '#073642',
+        '#273369', '#91bdb3'
     ];
+
+    // var COLORS = [
+    //     '#e21400' (red),  '#91580f'(burnt orange),
+    //      '#f8a700' (yellow), '#f78b00 (green)',
+    //     '#58dc00', '#287b00', '#a8f07a', '#4ae8c4',
+    //     '#3b88eb', '#3824aa', '#a700ff', '#d300e7'
+    // ];
 
     // Initialize varibles
     var $window = $(window);
@@ -22,6 +29,7 @@ $(function() {
     var typing = false;
     var lastTypingTime;
     var $currentInput = $usernameInput.focus();
+    var usernameList = ["Hello"];
 
     var socket = io();
 
@@ -35,13 +43,26 @@ $(function() {
         log(message);
     }
 
+    function validateForm() {
+        testUsername = $usernameInput.val().trim();
+        if (usernameList.indexOf(testUsername) > -1) {
+            alert("Sorry, that identity has already been taken. Choose another.");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     // Sets the client's username
 
     function setUsername() {
         username = cleanInput($usernameInput.val().trim());
-
         // If the username is valid
+        // var isValid = validateForm();
+        // if (isValid) {
         if (username) {
+            usernameList.push(username);
+            console.log(usernameList);
             $loginPage.fadeOut();
             $chatPage.show();
             $loginPage.off('click');
@@ -50,6 +71,7 @@ $(function() {
             // Tell the server your username
             socket.emit('add user', username, window.location.href);
         }
+
     }
 
     // Sends a chat message
@@ -213,7 +235,9 @@ $(function() {
                 socket.emit('stop typing', window.location.href);
                 typing = false;
             } else {
-                setUsername();
+                if (validateForm()) {
+                    setUsername();
+                }
             }
         }
     });
