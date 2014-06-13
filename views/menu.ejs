@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<DOCTYPE html>
 <html>
 <head>
     <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
@@ -6,7 +6,7 @@
     <meta charset="utf-8">
 <!--     <meta name="viewport" content="width=device-width, initial-scale=1">
  -->   
-    <meta property="og:title" content="Facebook Anonymous Chat" />
+    <meta property="og:title" content="Cque Chat" />
     <meta property="og:type" content="website" />
 <!--     <meta property="og:url" content="https://scrumpit.herokuapp.com" />
  -->
@@ -16,7 +16,7 @@
 
     <meta property="og:description" content="Scrumptious app" />
     <meta property="fb:app_id" content="314522715291696" />
-    <title>Anonymous FB Chat</title>
+    <title>Clique Chat</title>
     <!-- <link rel="stylesheet"  href="css/jquery.mobile-1.2.0.css" /> -->
     <link rel="stylesheet"  href="css/style.css" />
     <link rel="stylesheet"  href="css/base.css" />
@@ -41,11 +41,8 @@
         <div id="login-header">
             <img id="facebook-logo" src="images/facebook_logo.jpg" alt="Facebook" />
             <br>
-            <span class="tagline">Anonymous Chat</span>
+            <span class="tagline">Clique Chat</span>
         </div>
-<!--          <div id="login-intro">
-            <p class="intro">To get started, login using Facebook</p>
-        </div> -->
     </div>
     <div class="login-button">
         <div class="fb-login-button" data-show-faces="false" data-width="300" data-max-rows="1" size="large">
@@ -57,10 +54,8 @@
 <div data-role="page" id="menu" class="type-menu">
     <div data-role="header">
         <div class="ui-bar ui-bar-a">
-            <span class="topnav-app">Facebook Anonymous Chat</span>
+            <span class="topnav-app">Clique Chat</span>
             <span id="user-identity"></span>
-            <!-- menu trigger -->
-<!--             <a data-icon="arrow-d" data-iconpos="notext" href="#menu" data-rel="popup" data-position-to="#menu-anchor" data-transition="slidedown" data-inline="true" class="ui-btn-right">Menu</a> -->
         </div>
     </div><!-- /header -->
 
@@ -78,21 +73,8 @@
         </div>
 
         <div id="confirmation"></div>
-        <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b">
-<!--             <li><a href="#friends" onclick="getFriends()"><img src="images/action-people.png" /> <h3>With whom?</h3><p id="select-friends">Select friends</p></a></li>
- -->        </ul>
     </div>
 </div>
-    <!-- Select friends page -->
-<!--     <div data-role="page" id="friends" class="type-menu-drilldown">
-
-        <div data-role="content">
-            <div data-role="startChat"> 
-                <a class ="ui-btn-hover-f" href = "/chat">Let's Chat</a>
-            </div>
-            <ul data-role="listview" data-inset="false" data-theme="c" data-filter="true" id="friends-list"></ul>
-        </div>
-    </div> -->
 <script type="x-mustache-template" id="friends_list_tmpl">
     {{#.}}
 
