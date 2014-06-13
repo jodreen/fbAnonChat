@@ -50,7 +50,7 @@ var room_to_p_dict = {};
 var sid_to_p_dict = {};
 var p_to_sid_dict = {};
 var temp = []; // temp[0] = room, temp[1] = FB_id
-var MAXIMUM_ROOM_CAPACITY = 2;
+var MAXIMUM_ROOM_CAPACITY = 4;
 var room_to_people_count = {};
 var username_to_room = {};
 var usernameList = [];
@@ -176,6 +176,7 @@ io.sockets.on('connection', function(socket) {
 
 app.get('/', function(req, res) {
     var accessToken = req.session.access_token;
+    var first_name;
     if (!accessToken) {
         res.render('index', {
             loginUrl: FB.getLoginUrl({
@@ -193,7 +194,7 @@ app.get('/', function(req, res) {
                 return;
             }
             FB.api('fql', {
-                q: 'SELECT uid FROM user WHERE uid=me()',
+                q: 'SELECT uid, first_name FROM user WHERE uid=me()',
                 access_token: req.session.access_token
             }, function(r) {
                 if (!re || re.error) {
@@ -211,6 +212,7 @@ app.get('/', function(req, res) {
                     var randint = Math.floor((Math.random() * 90000) + 10000);
                     temp[0] = randint;
                     temp[1] = r.data[0]['uid'];
+                    // first_name = r.data[0]['first_name'];
                     var isValid = true;
                     for (var key in p_to_room_dict) {
                         if (friends_list_2.indexOf(key) != -1) { // friend found
@@ -231,11 +233,12 @@ app.get('/', function(req, res) {
                     room_to_p_dict[temp[0]] = [];
                 }
                 helper_function();
+                first_name = r.data[0]['first_name'];
+                res.render('menu', {name: first_name});
             });
         });
-        res.render('menu');
     }
-})
+});
 
 app.get('/login/callback', home.loginCallback);
 app.get('/logout', home.logout);

@@ -68,6 +68,11 @@
         <!-- menu content -->
         <div id="menu" data-role="popup">
             <ul id= "button-list" data-role="listview" data-inset="true">
+
+
+                <span> Welcome, <%- name %></span>
+
+
                 <li data-role="startChat"> 
                     <a id="chat-button" href = "/chat" onclick="socket.emit('clicked', $('#chat-button').attr('href'));">Let's Chat</a>
                 </li>
