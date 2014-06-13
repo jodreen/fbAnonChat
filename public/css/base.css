@@ -30,7 +30,7 @@ body, input, textarea, select, button {
 
 /*#login-header img { height: 100px; margin-top:10px; }*/
  #login-header {
-    width: 500px;
+    width: 75%;
     text-align: center;
     margin: auto;
     -webkit-touch-callout: none;
