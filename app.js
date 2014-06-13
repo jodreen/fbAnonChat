@@ -51,6 +51,7 @@ var sid_to_p_dict = {};
 var p_to_sid_dict = {};
 var temp = []; // temp[0] = room, temp[1] = FB_id
 var MAXIMUM_ROOM_CAPACITY = 2;
+var room_to_people_count = {};
 
 var usernames = {};
 var numUsers = 0;
@@ -79,7 +80,6 @@ io.sockets.on('connection', function(socket) {
         // we tell the client to execute 'new message'
         var tmp = url.split('/');
         room = tmp[tmp.length - 1];
-        console.log(room);
         socket.broadcast.emit('new message', {
             username: socket.username,
             message: data,
@@ -99,14 +99,20 @@ io.sockets.on('connection', function(socket) {
         var tmp = url.split('/');
         room = tmp[tmp.length - 1];
 
+        if (Object.keys(room_to_people_count).indexOf(room) == -1) { // Room is newly being added
+            room_to_people_count[room] = 1;
+        } else {
+            room_to_people_count[room] = room_to_people_count[room] + 1;
+        }
+
         socket.emit('login', {
-            numUsers: numUsers,
+            numUsers: room_to_people_count[room],
             room: room
         });
         // echo globally (all clients) that a person has connected
         socket.broadcast.emit('user joined', {
             username: socket.username,
-            numUsers: numUsers,
+            numUsers: room_to_people_count[room],
             room: room
         });
     });

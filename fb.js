@@ -507,7 +507,7 @@
         getLoginUrl = function(opt) {
             opt = opt || {};
             var clientId = opt.appId || opt.client_id || options('appId'),
-                redirectUri = opt.redirectUri || opt.redirect_uri || options('redirectUri') || 'http://cliquechat.herokuapp.com/',
+                redirectUri = opt.redirectUri || opt.redirect_uri || options('redirectUri') || 'https://www.facebook.com/connect/login_success.html/',
                 scope = opt.scope || options('scope'),
                 display = opt.display,
                 state = opt.state,
