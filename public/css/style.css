@@ -22,7 +22,88 @@ html, body {
   padding: 0;
 }
 */
- ul {
+ #login-header {
+    width: 75%;
+    text-align: center;
+    margin: auto;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+#golden-gate {
+    width: 100%;
+}
+#login-header img {
+    padding: 20px 5px 0;
+    margin: auto;
+}
+#facebook-logo {
+    width: 150px;
+    margin: auto;
+}
+#login-container {
+    width: 100px;
+    margin: auto;
+}
+#login-button {
+    width: 100%;
+}
+#button-list {
+    width: 180px;
+    height: 50px;
+    margin: auto;
+    text-align: center;
+}
+#button-list li {
+    /*border: px;*/
+    /*border: solid; */
+    margin: 30px;
+    /*border-color: gray;*/
+}
+#button-list li:hover {
+    background-color: #2d4681;
+    border: none;
+}
+#button-list li:hover a {
+    color: white;
+    font-weight: 700;
+}
+#button-list a {
+    font-weight: 400;
+    font-size: 25px;
+}
+#button-list a:hover {
+    color: white;
+}
+#chat-button {
+    color: gray;
+    text-decoration: none;
+}
+p.intro {
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 1.3;
+    color: #ccc;
+    text-shadow: 0px 0px #ccc;
+    border-bottom: 0;
+    background: none;
+    text-align: center;
+    margin-bottom: 10px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+img {
+    width: 300px;
+    margin: auto;
+}
+ul {
     list-style: none;
     word-wrap: break-word;
 }
@@ -80,6 +161,9 @@ html, body {
 /* Chat page */
  .chat.page {
     display: none;
+}
+#welcome {
+    font-size: 150%;
 }
 /* Font */
  .inputMessage {

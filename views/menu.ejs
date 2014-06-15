@@ -6,24 +6,16 @@
     <meta charset="utf-8">
 <!--     <meta name="viewport" content="width=device-width, initial-scale=1">
  -->   
-    <meta property="og:title" content="Cque Chat" />
+    <meta property="og:title" content="Clique Chat" />
     <meta property="og:type" content="website" />
-<!--     <meta property="og:url" content="https://scrumpit.herokuapp.com" />
- -->
- <!--     <meta property="og:image" content="https://scrumpit.herokuapp.com/images/scrumptious_logo_large.png" />
- -->
      <meta property="og:site_name" content="Scrumptious" />
 
     <meta property="og:description" content="Scrumptious app" />
-    <meta property="fb:app_id" content="314522715291696" />
+    <!-- <meta property="fb:app_id" content="314522715291696" /> -->
     <title>Clique Chat</title>
-    <!-- <link rel="stylesheet"  href="css/jquery.mobile-1.2.0.css" /> -->
     <link rel="stylesheet"  href="css/style.css" />
-    <link rel="stylesheet"  href="css/base.css" />
-    <!-- <script src='js/chat.js'></script> -->
     <script>window.location.hash = '#menu'</script>
     <script src="js/jquery.js"></script>
-    <!-- <script src="js/jquery.mobile-1.2.0.js"></script> -->
     <script src="js/mustache.js"></script>
     <script src="js/main.js"></script>
       <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
@@ -35,8 +27,6 @@
 <body>
 <!-- Facebook JavaScript -->
 <div id="fb-root"></div>
-
-<!-- login url https://www.facebook.com/login.php?skip_api_login=1&api_key=130243393813697&signed_next=1&next=https%3A%2F%2Fwww.facebook.com%2Fv1.0%2Fdialog%2Foauth%3Fredirect_uri%3Dhttp%253A%252F%252Flocalhost%253A3000%252Flogin%252Fcallback%26scope%3Duser_about_me%26response_type%3Dcode%26client_id%3D130243393813697%26ret%3Dlogin&cancel_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin%2Fcallback%3Ferror%3Daccess_denied%26error_code%3D200%26error_description%3DPermissions%2Berror%26error_reason%3Duser_denied%23_%3D_&display=page -->
 
 <!-- Login page -->
 <div data-role="page" id="login" class="type-home">
@@ -69,9 +59,7 @@
         <div id="menu" data-role="popup">
             <ul id= "button-list" data-role="listview" data-inset="true">
 
-
-                <span> Welcome, <%- name %></span>
-
+                <span id="welcome"> Welcome, <%- name %></span>
 
                 <li data-role="startChat"> 
                     <a id="chat-button" href = "/chat" onclick="socket.emit('clicked', $('#chat-button').attr('href'));">Let's Chat</a>
@@ -83,12 +71,7 @@
         <div id="confirmation"></div>
     </div>
 </div>
-<script type="x-mustache-template" id="friends_list_tmpl">
-    {{#.}}
 
-    <li id="hidden_friends" data-icon="false" data-name="{{ id }}"><a href="#{{name}}" data-transition="slide"><img src="{{ picture.data.url }}"></img>{{ name }}</a></li>
-    {{/.}}
-</script>
 <script>
 var socket = io();
 socket.on('connect', function(){
