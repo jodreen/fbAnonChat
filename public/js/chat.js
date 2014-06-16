@@ -53,7 +53,9 @@ $(function() {
             $chatPage.show();
             $loginPage.off('click');
             $currentInput = $inputMessage.focus();
-            $("#username").text(username);
+            $("#username").text(username); // LOOK HERE
+            $("#username").css("color", getUsernameColor(username));
+            //$("#username").css("padding-right", "5px");
             // Tell the server your username
             socket.emit('add user', username, window.location.href);
         }

@@ -234,7 +234,9 @@ app.get('/', function(req, res) {
                 }
                 helper_function();
                 first_name = r.data[0]['first_name'];
-                res.render('menu', {name: first_name});
+                res.render('menu', {
+                    name: first_name
+                });
             });
         });
     }

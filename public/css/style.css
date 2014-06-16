@@ -15,6 +15,15 @@ html {
     font-weight: 300;
     -webkit-font-smoothing: antialiased;
 }
+h2 {
+    color: #999;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
 /*
 html, body {
   height: 100%;
@@ -22,7 +31,31 @@ html, body {
   padding: 0;
 }
 */
- #login-header {
+ .tagline {
+    font-size: 700%;
+    color: #999;
+}
+p {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+p.intro {
+    font-weight: 300;
+    font-size: 200%;
+    line-height: 1.3;
+    color: #999;
+    text-shadow: 0px 0px #ccc;
+    border-bottom: 0;
+    background: none;
+    text-align: center;
+    margin-bottom: 10px;
+}
+#login-header {
+    padding-top: 10%;
     width: 75%;
     text-align: center;
     margin: auto;
@@ -52,15 +85,14 @@ html, body {
     width: 100%;
 }
 #button-list {
-    width: 180px;
+    width: 200px;
     height: 50px;
     margin: auto;
     text-align: center;
 }
 #button-list li {
-    /*border: px;*/
     /*border: solid; */
-    margin: 30px;
+    padding: 5%;
     /*border-color: gray;*/
 }
 #button-list li:hover {
@@ -81,23 +113,6 @@ html, body {
 #chat-button {
     color: gray;
     text-decoration: none;
-}
-p.intro {
-    font-weight: 300;
-    font-size: 20px;
-    line-height: 1.3;
-    color: #ccc;
-    text-shadow: 0px 0px #ccc;
-    border-bottom: 0;
-    background: none;
-    text-align: center;
-    margin-bottom: 10px;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
 }
 img {
     width: 300px;
@@ -164,6 +179,7 @@ ul {
 }
 #welcome {
     font-size: 150%;
+    padding
 }
 /* Font */
  .inputMessage {
@@ -265,4 +281,18 @@ ul {
     color: #8b9dc3;
     font-size: 100%;
     font-family:"Roboto Condensed";
+}
+footer {
+    display: block;
+    position: relative;
+    bottom: 0;
+    padding-left: 2%;
+    /*padding-bottom: -50px;*/
+}
+.row {
+    /*height: 400px;*/
+}
+#username {
+    display: block;
+    font-size: 100%;
 }

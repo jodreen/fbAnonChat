@@ -32,8 +32,6 @@
 <div data-role="page" id="login" class="type-home">
     <div data-role="content">
         <div id="login-header">
-            <img id="facebook-logo" src="images/facebook_logo.jpg" alt="Facebook" />
-            <br>
             <span class="tagline">Clique Chat</span>
         </div>
     </div>
@@ -45,12 +43,6 @@
 </div>
 <!-- Main menu page -->
 <div data-role="page" id="menu" class="type-menu">
-    <div data-role="header">
-        <div class="ui-bar ui-bar-a">
-            <span class="topnav-app">Clique Chat</span>
-            <span id="user-identity"></span>
-        </div>
-    </div><!-- /header -->
 
     <div data-role="content">
         <!-- menu position helper -->
@@ -59,7 +51,7 @@
         <div id="menu" data-role="popup">
             <ul id= "button-list" data-role="listview" data-inset="true">
 
-                <span id="welcome"> Welcome, <%- name %></span>
+                <span id="welcome" style="font-color:"> Welcome, <%- name %></span>
 
                 <li data-role="startChat"> 
                     <a id="chat-button" href = "/chat" onclick="socket.emit('clicked', $('#chat-button').attr('href'));">Let's Chat</a>
