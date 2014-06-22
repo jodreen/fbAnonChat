@@ -7,12 +7,12 @@
   <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
   <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
-  <script src="/js/chat.js"></script>
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
+  <div id="fbId" style="visibility:hidden;"><%- fbId %></div>
   <ul class="pages">
     <li class="chat page" data-role="content">
       <div class="chatArea">
@@ -86,7 +86,7 @@ $(function() {
             $("#username").css("color", getUsernameColor(username));
             //$("#username").css("padding-right", "5px");
             // Tell the server your username
-            socket.emit('add user', username, window.location.href);
+            socket.emit('add user', username, window.location.href, $('#fbId').text());
         }
 
     }

@@ -81,9 +81,10 @@ io.sockets.on('connection', function(socket) {
             room_to_people_count[room] = room_to_people_count[room] - 1;
 
 
+            console.log('socket.fbId: ' + socket.fbId);
             console.log('room_to_p_dict: ' + JSON.stringify(room_to_p_dict));
             console.log('p_to_room_dict: ' + JSON.stringify(p_to_room_dict));
-            console.log('username_to_room before: ' + JSON.stringify(username_to_room));
+            console.log('username_to_room: ' + JSON.stringify(username_to_room));
 
 
             // echo globally that this client has left
@@ -125,9 +126,10 @@ io.sockets.on('connection', function(socket) {
     });
 
     // when the client emits 'add user', this listens and executes
-    socket.on('add user', function(username, url) {
+    socket.on('add user', function(username, url, fbId) {
         // we store the username in the socket session for this client
         socket.username = username;
+        socket.fbId = fbId;
         // add the client's username to the global list
         usernames[username] = username;
         ++numUsers;
@@ -228,13 +230,8 @@ app.get('/', function(req, res) {
                     var randint = Math.floor((Math.random() * 90000) + 10000);
                     temp[0] = randint;
                     temp[1] = r.data[0]['uid'];
-                    // first_name = r.data[0]['first_name'];
                     var isValid = true;
-                    // console.log('p_to_room_dict' + JSON.stringify(p_to_room_dict));
                     for (var key in p_to_room_dict) {
-                        // console.log('friends_list: ' + friends_list_2);
-                        // console.log('key: ' + key);
-
                         if (friends_list_2.indexOf(key) != -1) { // friend found
                             var curr_room_list = room_to_p_dict[p_to_room_dict[key]];
                             // console.log('curr_room_list: ' + JSON.stringify(curr_room_list));
@@ -268,13 +265,21 @@ app.get('/logout', home.logout);
 // app.get('/friends', api.friends);
 app.get('/chat/:id', function(req, res, next) {
     // console.log(Number(req.params.id));
-    if (Number(req.params.id) != NaN &&
-        (Object.keys(room_to_people_count).indexOf(req.params.id) != -1 && room_to_people_count[req.params.id] < MAXIMUM_ROOM_CAPACITY) ||
-        Object.keys(room_to_people_count).indexOf(req.params.id) == -1) { // logic for shit
-        res.render('chat.ejs');
-    } else if (Number(req.params.id) != NaN && Object.keys(room_to_people_count).indexOf(req.params.id) != -1 && room_to_people_count[req.params.id] >= MAXIMUM_ROOM_CAPACITY) {
-        res.send('Sorry. This room is at max capacity.' + '<br><br><a href="/">Back to Home</a>');
-    } else {
-        next();
-    }
+    FB.api('fql', {
+        q: 'SELECT uid, first_name FROM user WHERE uid=me()',
+        access_token: req.session.access_token
+    }, function(r) {
+        if (Number(req.params.id) != NaN &&
+            (Object.keys(room_to_people_count).indexOf(req.params.id) != -1 && room_to_people_count[req.params.id] < MAXIMUM_ROOM_CAPACITY) ||
+            Object.keys(room_to_people_count).indexOf(req.params.id) == -1) { // logic for shit
+            res.render('chat.ejs', {
+                fbId: r.data[0]['uid']
+            });
+        } else if (Number(req.params.id) != NaN && Object.keys(room_to_people_count).indexOf(req.params.id) != -1 && room_to_people_count[req.params.id] >= MAXIMUM_ROOM_CAPACITY) {
+            res.send('Sorry. This room is at max capacity.' + '<br><br><a href="/">Back to Home</a>');
+        } else {
+            next();
+        }
+
+    });
 })
