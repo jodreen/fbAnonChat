@@ -63,7 +63,11 @@ io.sockets.on('connection', function(socket) {
 
     // when the user disconnects.. perform this
     socket.on('disconnect', function() {
-        console.log('CALLED DISCONNECT');
+        // console.log('CALLED DISCONNECT');
+
+        // console.log('room_to_p_dict: ' + JSON.stringify(room_to_p_dict));
+        // console.log('p_to_room_dict: ' + JSON.stringify(p_to_room_dict));
+
         // remove the username from global usernames list
         if (addedUser) {
             delete usernames[socket.username];
@@ -80,12 +84,17 @@ io.sockets.on('connection', function(socket) {
             delete username_to_room[socket.username];
             room_to_people_count[room] = room_to_people_count[room] - 1;
 
+            delete p_to_room_dict[socket.fbId.toString()];
+            var index = room_to_p_dict[socket.room.toString()].indexOf(socket.fbId.toString());
+            room_to_p_dict[socket.room.toString()].splice(index, 1);
+            if (room_to_p_dict[socket.room.toString()].length == 0) {
+                delete room_to_p_dict[socket.room.toString()];
+            }
 
             console.log('socket.fbId: ' + socket.fbId);
-            console.log('room_to_p_dict: ' + JSON.stringify(room_to_p_dict));
-            console.log('p_to_room_dict: ' + JSON.stringify(p_to_room_dict));
-            console.log('username_to_room: ' + JSON.stringify(username_to_room));
-
+            console.log('socket.room: ' + socket.room);
+            console.log('room_to_p_dict after: ' + JSON.stringify(room_to_p_dict));
+            console.log('p_to_room_dict after: ' + JSON.stringify(p_to_room_dict));
 
             // echo globally that this client has left
             socket.broadcast.emit('user left', {
@@ -138,7 +147,7 @@ io.sockets.on('connection', function(socket) {
 
         var tmp = url.split('/');
         room = tmp[tmp.length - 1];
-
+        socket.room = room;
         username_to_room[socket.username] = room;
 
         if (Object.keys(room_to_people_count).indexOf(room) == -1) { // Room is newly being added
