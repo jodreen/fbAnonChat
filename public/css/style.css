@@ -84,6 +84,18 @@ p.intro {
 #login-button {
     width: 100%;
 }
+.col-md-4 {
+    /*background-color: #5fbfaa;*/
+    background-color: #ccd7e8;
+    /*border: solid;*/
+    border-width: 20px;
+    border-color: white;
+    /*height: 400px;*/
+    padding: 10px !important;
+}
+.row {
+    height: 200px;
+}
 #button-list {
     width: 200px;
     height: 50px;
@@ -295,4 +307,5 @@ footer {
 #username {
     display: block;
     font-size: 100%;
+    font-color:;
 }

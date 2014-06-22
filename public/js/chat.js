@@ -262,7 +262,7 @@ $(function() {
 
         connected = true;
         // Display the welcome message
-        var message = "Welcome to Facebook Anonymous Chat";
+        var message = "Welcome to Clique Chat";
         log(message, {
             prepend: true
         });
