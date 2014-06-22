@@ -32,7 +32,11 @@
       </div>
     </li>
   </ul>
-
-
 </body>
+<script> 
+var socket = io();
+socket.on('connect', function(){
+    socket.emit('test', true); // replace true with friends
+});
+</script>
 </html>

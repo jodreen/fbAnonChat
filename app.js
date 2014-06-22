@@ -60,6 +60,39 @@ var numUsers = 0;
 
 io.sockets.on('connection', function(socket) {
     var addedUser = false;
+
+    // when the user disconnects.. perform this
+    socket.on('disconnect', function() {
+        console.log('CALLED DISCONNECT');
+        // remove the username from global usernames list
+        if (addedUser) {
+            delete usernames[socket.username];
+            --numUsers;
+
+            var index = usernameList.indexOf(socket.username);
+            if (index > -1) {
+                usernameList.splice(index, 1);
+            }
+
+            var room = username_to_room[socket.username];
+            console.log('room_to_p_dict: ' + JSON.stringify(room_to_p_dict));
+            console.log('p_to_room_dict: ' + JSON.stringify(p_to_room_dict));
+            console.log('username_to_room: ' + JSON.stringify(username_to_room));
+
+            // NEED FB API USERNAME TO DELETE
+            console.log(usernameList);
+
+            room_to_people_count[room] = room_to_people_count[room] - 1;
+
+            // echo globally that this client has left
+            socket.broadcast.emit('user left', {
+                username: socket.username,
+                numUsers: room_to_people_count[room],
+                left_room: room
+            });
+        }
+    });
+
     socket.on('new person', function(data) {
         // populate data from '/' before deciding on room number
         setTimeout(function() {
@@ -120,6 +153,11 @@ io.sockets.on('connection', function(socket) {
             numUsers: room_to_people_count[room],
             room: room
         });
+
+        // console.log("username: " + username);
+        // console.log("username_to_room: " + JSON.stringify(username_to_room));
+        // console.log("room_to_people_count: " + JSON.stringify(room_to_people_count));
+
     });
 
     // when the client emits 'typing', we broadcast it to others
@@ -140,30 +178,6 @@ io.sockets.on('connection', function(socket) {
             username: socket.username,
             room: room
         });
-    });
-
-    // when the user disconnects.. perform this
-    socket.on('disconnect', function() {
-        // remove the username from global usernames list
-        if (addedUser) {
-            delete usernames[socket.username];
-            --numUsers;
-
-            var index = usernameList.indexOf(socket.username);
-            if (index > -1) {
-                usernameList.splice(index, 1);
-            }
-
-            var room = username_to_room[socket.username];
-            room_to_people_count[room] = room_to_people_count[room] - 1;
-
-            // echo globally that this client has left
-            socket.broadcast.emit('user left', {
-                username: socket.username,
-                numUsers: room_to_people_count[room],
-                left_room: room
-            });
-        }
     });
 
     socket.on('get usernamelist', function() {
@@ -214,9 +228,14 @@ app.get('/', function(req, res) {
                     temp[1] = r.data[0]['uid'];
                     // first_name = r.data[0]['first_name'];
                     var isValid = true;
+                    console.log('p_to_room_dict' + JSON.stringify(p_to_room_dict));
                     for (var key in p_to_room_dict) {
+                        // console.log('friends_list: ' + friends_list_2);
+                        // console.log('key: ' + key);
+
                         if (friends_list_2.indexOf(key) != -1) { // friend found
                             var curr_room_list = room_to_p_dict[p_to_room_dict[key]];
+                            // console.log('curr_room_list: ' + JSON.stringify(curr_room_list));
                             if (curr_room_list.length <= MAXIMUM_ROOM_CAPACITY) { // room at maximum capacity
                                 for (var x = 0; x < curr_room_list.length; x++) { // loop through people in interested room
                                     if (friends_list_2.indexOf(curr_room_list[x].toString()) == -1) {
