@@ -75,14 +75,16 @@ io.sockets.on('connection', function(socket) {
             }
 
             var room = username_to_room[socket.username];
+            // NEED FB API USERNAME TO DELETE
+            usernameList.splice(usernameList.indexOf(socket.username), 1);
+            delete username_to_room[socket.username];
+            room_to_people_count[room] = room_to_people_count[room] - 1;
+
+
             console.log('room_to_p_dict: ' + JSON.stringify(room_to_p_dict));
             console.log('p_to_room_dict: ' + JSON.stringify(p_to_room_dict));
-            console.log('username_to_room: ' + JSON.stringify(username_to_room));
+            console.log('username_to_room before: ' + JSON.stringify(username_to_room));
 
-            // NEED FB API USERNAME TO DELETE
-            console.log(usernameList);
-
-            room_to_people_count[room] = room_to_people_count[room] - 1;
 
             // echo globally that this client has left
             socket.broadcast.emit('user left', {
@@ -228,7 +230,7 @@ app.get('/', function(req, res) {
                     temp[1] = r.data[0]['uid'];
                     // first_name = r.data[0]['first_name'];
                     var isValid = true;
-                    console.log('p_to_room_dict' + JSON.stringify(p_to_room_dict));
+                    // console.log('p_to_room_dict' + JSON.stringify(p_to_room_dict));
                     for (var key in p_to_room_dict) {
                         // console.log('friends_list: ' + friends_list_2);
                         // console.log('key: ' + key);
