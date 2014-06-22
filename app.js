@@ -120,6 +120,11 @@ io.sockets.on('connection', function(socket) {
             numUsers: room_to_people_count[room],
             room: room
         });
+
+        // console.log("username: " + username);
+        // console.log("username_to_room: " + JSON.stringify(username_to_room));
+        // console.log("room_to_people_count: " + JSON.stringify(room_to_people_count));
+
     });
 
     // when the client emits 'typing', we broadcast it to others
@@ -214,9 +219,14 @@ app.get('/', function(req, res) {
                     temp[1] = r.data[0]['uid'];
                     // first_name = r.data[0]['first_name'];
                     var isValid = true;
+                    console.log('p_to_room_dict' + JSON.stringify(p_to_room_dict));
                     for (var key in p_to_room_dict) {
+                        // console.log('friends_list: ' + friends_list_2);
+                        // console.log('key: ' + key);
+
                         if (friends_list_2.indexOf(key) != -1) { // friend found
                             var curr_room_list = room_to_p_dict[p_to_room_dict[key]];
+                            // console.log('curr_room_list: ' + JSON.stringify(curr_room_list));
                             if (curr_room_list.length <= MAXIMUM_ROOM_CAPACITY) { // room at maximum capacity
                                 for (var x = 0; x < curr_room_list.length; x++) { // loop through people in interested room
                                     if (friends_list_2.indexOf(curr_room_list[x].toString()) == -1) {
