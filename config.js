@@ -9,7 +9,6 @@ config.facebook = {
     redirectUri: process.env.FACEBOOK_REDIRECTURI || config.rootUrl + 'login/callback'
 };
 
-
 // Developing Configs
 // config.rootUrl = process.env.ROOT_URL || 'http://localhost:3000/';
 // config.facebook = {

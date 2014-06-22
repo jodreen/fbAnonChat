@@ -60,6 +60,39 @@ var numUsers = 0;
 
 io.sockets.on('connection', function(socket) {
     var addedUser = false;
+
+    // when the user disconnects.. perform this
+    socket.on('disconnect', function() {
+        console.log('CALLED DISCONNECT');
+        // remove the username from global usernames list
+        if (addedUser) {
+            delete usernames[socket.username];
+            --numUsers;
+
+            var index = usernameList.indexOf(socket.username);
+            if (index > -1) {
+                usernameList.splice(index, 1);
+            }
+
+            var room = username_to_room[socket.username];
+            console.log('room_to_p_dict: ' + JSON.stringify(room_to_p_dict));
+            console.log('p_to_room_dict: ' + JSON.stringify(p_to_room_dict));
+            console.log('username_to_room: ' + JSON.stringify(username_to_room));
+
+            // NEED FB API USERNAME TO DELETE
+            console.log(usernameList);
+
+            room_to_people_count[room] = room_to_people_count[room] - 1;
+
+            // echo globally that this client has left
+            socket.broadcast.emit('user left', {
+                username: socket.username,
+                numUsers: room_to_people_count[room],
+                left_room: room
+            });
+        }
+    });
+
     socket.on('new person', function(data) {
         // populate data from '/' before deciding on room number
         setTimeout(function() {
@@ -145,30 +178,6 @@ io.sockets.on('connection', function(socket) {
             username: socket.username,
             room: room
         });
-    });
-
-    // when the user disconnects.. perform this
-    socket.on('disconnect', function() {
-        // remove the username from global usernames list
-        if (addedUser) {
-            delete usernames[socket.username];
-            --numUsers;
-
-            var index = usernameList.indexOf(socket.username);
-            if (index > -1) {
-                usernameList.splice(index, 1);
-            }
-
-            var room = username_to_room[socket.username];
-            room_to_people_count[room] = room_to_people_count[room] - 1;
-
-            // echo globally that this client has left
-            socket.broadcast.emit('user left', {
-                username: socket.username,
-                numUsers: room_to_people_count[room],
-                left_room: room
-            });
-        }
     });
 
     socket.on('get usernamelist', function() {
