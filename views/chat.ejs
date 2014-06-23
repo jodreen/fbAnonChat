@@ -326,6 +326,7 @@ $(function() {
 
     // Whenever the server emits 'user left', log it in the chat body
     socket.on('user left', function(data) {
+        console.log('user ' + data.username + ' has left room ' + data.left_room);
         var url = window.location.href;
         var tmp = url.split('/');
         room = tmp[tmp.length - 1];
