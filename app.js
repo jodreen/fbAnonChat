@@ -65,8 +65,17 @@ io.sockets.on('connection', function(socket) {
     socket.on('disconnect', function() {
         // console.log('CALLED DISCONNECT');
 
-        // console.log('room_to_p_dict: ' + JSON.stringify(room_to_p_dict));
-        // console.log('p_to_room_dict: ' + JSON.stringify(p_to_room_dict));
+        // for (var i in room_to_p_dict) {
+        //     if (room_to_p_dict[i].length == 0) {
+        //         delete room_to_p_dict[i];
+        //     }
+        // }
+
+        console.log('socket.room: ' + socket.room);
+        console.log('room_to_p_dict: ' + JSON.stringify(room_to_p_dict));
+        console.log('p_to_room_dict: ' + JSON.stringify(p_to_room_dict));
+
+        if (room_to_p_dict[socket.room.toString()].length == 0) delete room_to_p_dict[socket.room.toString()];
 
         // remove the username from global usernames list
         if (addedUser) {
@@ -108,6 +117,7 @@ io.sockets.on('connection', function(socket) {
     socket.on('new person', function(data) {
         // populate data from '/' before deciding on room number
         setTimeout(function() {
+            socket.room = temp[0];
             sid_to_p_dict[socket.id] = temp[1];
             p_to_sid_dict[temp[1]] = socket.id;
             socket.emit('updaterooms', temp);
