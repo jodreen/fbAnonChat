@@ -232,7 +232,7 @@ app.get('/', function(req, res) {
     } else {
         // populate available_rooms and available_people
         FB.api('fql', {
-            q: 'SELECT uid2 FROM friend WHERE uid1 = me()',
+            q: 'SELECT uid2 FROM friend WHERE uid1=me()',
             access_token: req.session.access_token
         }, function(re) {
             if (!re || re.error) {
@@ -283,7 +283,8 @@ app.get('/', function(req, res) {
                 res.json({
                     friendlist: friends_list_2,
                     friendlist1: friends_list,
-                    anything: r.data
+                    anything: r.data,
+                    please: re
                 });
                 return;
 
