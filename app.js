@@ -281,7 +281,8 @@ app.get('/', function(req, res) {
                 helper_function();
 
                 res.json({
-                    friendlist: friends_list_2
+                    friendlist: friends_list_2,
+                    friendlist1: friends_list;
                 });
                 return;
 
