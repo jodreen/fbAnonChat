@@ -280,13 +280,15 @@ app.get('/', function(req, res) {
                 }
                 helper_function();
 
-                res.json({
-                    friendlist: friends_list_2,
-                    friendlist1: friends_list,
-                    anything: r.data,
-                    please: re
-                });
-                return;
+                // in production, FB api returns an empty friend list; must research more
+
+                // res.json({
+                //     friendlist: friends_list_2,
+                //     friendlist1: friends_list,
+                //     anything: r.data,
+                //     please: re
+                // });
+                // return;
 
                 first_name = r.data[0]['first_name'];
                 res.render('menu', {
