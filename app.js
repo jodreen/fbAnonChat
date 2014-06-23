@@ -71,11 +71,11 @@ io.sockets.on('connection', function(socket) {
         //     }
         // }
 
-        console.log('socket.room: ' + socket.room);
+        // console.log('socket.room: ' + socket.room);
         console.log('room_to_p_dict: ' + JSON.stringify(room_to_p_dict));
         console.log('p_to_room_dict: ' + JSON.stringify(p_to_room_dict));
 
-        if (room_to_p_dict[socket.room.toString()].length == 0) delete room_to_p_dict[socket.room.toString()];
+        // if (room_to_p_dict[socket.room.toString()] == null || room_to_p_dict[socket.room.toString()].length == 0) delete room_to_p_dict[socket.room.toString()];
 
         // remove the username from global usernames list
         if (addedUser) {
@@ -94,10 +94,12 @@ io.sockets.on('connection', function(socket) {
             room_to_people_count[room] = room_to_people_count[room] - 1;
 
             delete p_to_room_dict[socket.fbId.toString()];
-            var index = room_to_p_dict[socket.room.toString()].indexOf(socket.fbId.toString());
-            room_to_p_dict[socket.room.toString()].splice(index, 1);
-            if (room_to_p_dict[socket.room.toString()].length == 0) {
-                delete room_to_p_dict[socket.room.toString()];
+            if (room_to_p_dict[socket.room.toString()] != null) {
+                var index = room_to_p_dict[socket.room.toString()].indexOf(socket.fbId.toString());
+                room_to_p_dict[socket.room.toString()].splice(index, 1);
+                if (room_to_p_dict[socket.room.toString()].length == 0) {
+                    delete room_to_p_dict[socket.room.toString()];
+                }
             }
 
             console.log('socket.fbId: ' + socket.fbId);
@@ -128,7 +130,12 @@ io.sockets.on('connection', function(socket) {
         // console.log('CLICKED');
         // console.log(temp);
         p_to_room_dict[temp[1]] = temp[0];
-        room_to_p_dict[temp[0]].push(temp[1]);
+        if (room_to_p_dict[temp[0]] == null) {
+            room_to_p_dict[temp[0]] = [];
+        }
+        if (room_to_p_dict[temp[0]].indexOf(temp[1] == -1)) {
+            room_to_p_dict[temp[0]].push(temp[1]);
+        }
     });
 
     // CHAT STUFF
@@ -140,7 +147,9 @@ io.sockets.on('connection', function(socket) {
         socket.broadcast.emit('new message', {
             username: socket.username,
             message: data,
-            room: room
+            room: room,
+            debug1: JSON.stringify(p_to_room_dict),
+            debug2: JSON.stringify(room_to_p_dict)
         });
     });
 
