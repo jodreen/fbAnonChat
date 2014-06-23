@@ -279,6 +279,12 @@ app.get('/', function(req, res) {
                     room_to_p_dict[temp[0]] = [];
                 }
                 helper_function();
+
+                res.json({
+                    friendlist: friends_list_2
+                });
+                return;
+
                 first_name = r.data[0]['first_name'];
                 res.render('menu', {
                     name: first_name
