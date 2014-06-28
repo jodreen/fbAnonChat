@@ -2,6 +2,9 @@ body {
     font: 14px"Roboto Condensed", Helvetica, sans-serif !important;
     background-image:url("../images/gplaypattern.png");
     background-repeat: repeat;
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 a {
     color: #00B7FF;
@@ -53,6 +56,13 @@ p.intro {
     background: none;
     text-align: center;
     margin-bottom: 10px;
+}
+#wrapper {
+    min-height: 100%;
+    /*position: relative;*/
+}
+#container {
+    /*padding-bottom: 40px;*/
 }
 #login-header {
     padding-top: 10%;
@@ -295,10 +305,18 @@ ul {
     font-family:"Roboto Condensed";
 }
 footer {
-    display: block;
-    position: relative;
+    /*display: block;*/
+    /*position: relative;*/
+    /*display: inline;*/
+    background-color: black;
+    position: fixed;
     bottom: 0;
-    padding-left: 2%;
+    left: 0;
+    width: 100%;
+    position: absolute;
+    height: 40px;
+    clear: both;
+    /*padding-left: 2%;*/
     /*padding-bottom: -50px;*/
 }
 .row {
@@ -307,5 +325,5 @@ footer {
 #username {
     display: block;
     font-size: 100%;
-    font-color:;
+    /*font-color:;*/
 }
