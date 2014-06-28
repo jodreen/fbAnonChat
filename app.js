@@ -65,8 +65,17 @@ io.sockets.on('connection', function(socket) {
     socket.on('disconnect', function() {
         // console.log('CALLED DISCONNECT');
 
-        // console.log('room_to_p_dict: ' + JSON.stringify(room_to_p_dict));
-        // console.log('p_to_room_dict: ' + JSON.stringify(p_to_room_dict));
+        // for (var i in room_to_p_dict) {
+        //     if (room_to_p_dict[i].length == 0) {
+        //         delete room_to_p_dict[i];
+        //     }
+        // }
+
+        // console.log('socket.room: ' + socket.room);
+        console.log('room_to_p_dict: ' + JSON.stringify(room_to_p_dict));
+        console.log('p_to_room_dict: ' + JSON.stringify(p_to_room_dict));
+
+        // if (room_to_p_dict[socket.room.toString()] == null || room_to_p_dict[socket.room.toString()].length == 0) delete room_to_p_dict[socket.room.toString()];
 
         // remove the username from global usernames list
         if (addedUser) {
@@ -85,10 +94,12 @@ io.sockets.on('connection', function(socket) {
             room_to_people_count[room] = room_to_people_count[room] - 1;
 
             delete p_to_room_dict[socket.fbId.toString()];
-            var index = room_to_p_dict[socket.room.toString()].indexOf(socket.fbId.toString());
-            room_to_p_dict[socket.room.toString()].splice(index, 1);
-            if (room_to_p_dict[socket.room.toString()].length == 0) {
-                delete room_to_p_dict[socket.room.toString()];
+            if (room_to_p_dict[socket.room.toString()] != null) {
+                var index = room_to_p_dict[socket.room.toString()].indexOf(socket.fbId.toString());
+                room_to_p_dict[socket.room.toString()].splice(index, 1);
+                if (room_to_p_dict[socket.room.toString()].length == 0) {
+                    delete room_to_p_dict[socket.room.toString()];
+                }
             }
 
             console.log('socket.fbId: ' + socket.fbId);
@@ -108,6 +119,7 @@ io.sockets.on('connection', function(socket) {
     socket.on('new person', function(data) {
         // populate data from '/' before deciding on room number
         setTimeout(function() {
+            socket.room = temp[0];
             sid_to_p_dict[socket.id] = temp[1];
             p_to_sid_dict[temp[1]] = socket.id;
             socket.emit('updaterooms', temp);
@@ -118,7 +130,12 @@ io.sockets.on('connection', function(socket) {
         // console.log('CLICKED');
         // console.log(temp);
         p_to_room_dict[temp[1]] = temp[0];
-        room_to_p_dict[temp[0]].push(temp[1]);
+        if (room_to_p_dict[temp[0]] == null) {
+            room_to_p_dict[temp[0]] = [];
+        }
+        if (room_to_p_dict[temp[0]].indexOf(temp[1] == -1)) {
+            room_to_p_dict[temp[0]].push(temp[1]);
+        }
     });
 
     // CHAT STUFF
@@ -130,7 +147,9 @@ io.sockets.on('connection', function(socket) {
         socket.broadcast.emit('new message', {
             username: socket.username,
             message: data,
-            room: room
+            room: room,
+            debug1: JSON.stringify(p_to_room_dict),
+            debug2: JSON.stringify(room_to_p_dict)
         });
     });
 
@@ -213,7 +232,7 @@ app.get('/', function(req, res) {
     } else {
         // populate available_rooms and available_people
         FB.api('fql', {
-            q: 'SELECT uid2 FROM friend WHERE uid1 = me()',
+            q: 'SELECT uid2 FROM friend WHERE uid1=me()',
             access_token: req.session.access_token
         }, function(re) {
             if (!re || re.error) {
@@ -260,6 +279,17 @@ app.get('/', function(req, res) {
                     room_to_p_dict[temp[0]] = [];
                 }
                 helper_function();
+
+                // in production, FB api returns an empty friend list; must research more
+
+                // res.json({
+                //     friendlist: friends_list_2,
+                //     friendlist1: friends_list,
+                //     anything: r.data,
+                //     please: re
+                // });
+                // return;
+
                 first_name = r.data[0]['first_name'];
                 res.render('menu', {
                     name: first_name
